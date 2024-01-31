@@ -28,16 +28,13 @@
 					
 					//location.href = "/board/boardList.do?pageNo=${pageNo}";
 					location.href = "/board/boardList.do";
-					/* function href(){
-						location.href = "/board/boardList.do?pageNo=${pageNo}";
-					}
-					setTimeout(href,3000); */
+
 					
 					
 			    },
 			    error: function (jqXHR, textStatus, errorThrown)
 			    {
-			    	alert(param);
+
 			    	alert("½ÇÆÐ");
 			    }
 			});

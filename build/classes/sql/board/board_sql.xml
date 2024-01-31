@@ -26,10 +26,61 @@
 		      	,ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW
 		      	,COUNT(*) OVER() AS TOTAL_CNT
 			FROM
-				BOARD	
+				BOARD
 		)
 		WHERE NUMROW BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})*10
     </select>
+
+	<select id="boardListByType" parameterType="map" resultMap="boardVo">
+	    SELECT 
+	        BOARD_TYPE,
+	        BOARD_NUM,
+	        BOARD_TITLE,
+	        BOARD_COMMENT,
+	        TOTAL_CNT
+	    FROM 
+	    (
+	        SELECT
+	            BOARD_TYPE,
+	            BOARD_NUM,
+	            BOARD_TITLE,
+	            BOARD_COMMENT,
+	            ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW,
+	            COUNT(*) OVER() AS TOTAL_CNT
+	        FROM
+	            BOARD	            
+	        WHERE 
+	            BOARD_TYPE IN
+	            <foreach collection="boardTypes" item="boardType" open="(" separator="," close=")">
+	                #{boardType}
+	            </foreach>
+	    )
+	    WHERE NUMROW BETWEEN (#{pageVo.pageNo}-1)*10 + 1 AND (#{pageVo.pageNo})*10
+	</select>
+	
+	 <select id="boardTypeTotal" parameterType="map" resultType="Integer">
+		  SELECT
+		      	COUNT(*) AS TOTAL_CNT
+			FROM
+				(
+			        SELECT
+			            BOARD_TYPE,
+			            BOARD_NUM,
+			            BOARD_TITLE,
+			            BOARD_COMMENT,
+			            ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW,
+			            COUNT(*) OVER() AS TOTAL_CNT
+			        FROM
+			            BOARD	            
+			        WHERE 
+			            BOARD_TYPE IN
+			            <foreach collection="boardTypes" item="boardType" open="(" separator="," close=")">
+			                #{boardType}
+			            </foreach>
+			    )
+			WHERE NUMROW BETWEEN (#{pageVo.pageNo}-1)*10 + 1 AND (#{pageVo.pageNo})*10
+    </select>
+ 
     
     <select id="boardTotal" parameterType="Integer" resultType="Integer">
 		  SELECT
@@ -63,10 +114,10 @@
         ,MODIFIED_TIME
         )
         VALUES
-        ('1'
+        (#{boardType}
         ,NVL( (SELECT TO_NUMBER(MAX(BOARD_NUM)+1)
 	    FROM BOARD
-	    WHERE BOARD_TYPE = '1'), 1)
+	    WHERE BOARD_TYPE = #{boardType}), 1)
         ,#{boardTitle}
         ,#{boardComment}
         ,'SYSTEM'

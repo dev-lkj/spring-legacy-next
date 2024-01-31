@@ -1,11 +1,17 @@
 package com.spring.board.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.ibatis.annotations.Param;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
@@ -25,6 +31,7 @@ import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.PageVo;
 import com.spring.common.CommonUtil;
+import com.sun.org.glassfish.gmbal.ParameterNames;
 
 @Controller
 public class BoardController {
@@ -35,8 +42,10 @@ public class BoardController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
-	public String boardList(Locale locale, Model model,PageVo pageVo) throws Exception{
-		
+	public String boardList(Locale locale, 
+			Model model, 
+			PageVo pageVo) throws Exception{
+	
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
 		
 		int page = 1;
@@ -46,15 +55,80 @@ public class BoardController {
 			pageVo.setPageNo(page);
 		}
 		
-		boardList = boardService.SelectBoardList(pageVo);
-		totalCnt = boardService.selectBoardCnt();
 		
+        boardList = boardService.selectBoardList(pageVo);
+        totalCnt = boardService.selectBoardCnt();
+
+
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("pageNo", page);
 		
+
+		
 		return "board/boardList";
 	}
+	
+	@RequestMapping(value = "/board/boardTypeList.do", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String boardTypeList(Locale locale, 
+			Model model, 
+			@RequestParam(value = "boardType", required = false, defaultValue = "") String[] boardType,
+			PageVo pageVo
+			) throws Exception{
+	
+		List<BoardVo> boardList = new ArrayList<BoardVo>();
+		
+		int page = 1;
+		int totalCnt = 0;
+		
+		if(pageVo.getPageNo() == 0){
+			pageVo.setPageNo(page);
+		}
+		
+		
+		Map<String, Object> map = new HashMap<>();
+		CommonUtil commonUtil = new CommonUtil();
+		
+	    boardList = boardService.selectBoardListByType(pageVo, boardType);
+	    totalCnt = boardService.selectBoardTypeCnt(pageVo, boardType);
+	       
+	      
+
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("totalCnt", totalCnt);
+		model.addAttribute("pageNo", page);
+		
+//	        map.put("boardList", boardList);
+//	        map.put("totalCnt", totalCnt);
+//	        map.put("pageNo", pageVo.getPageNo());
+//	        
+//	        String callbackMsg = commonUtil.getJsonCallBackString(" ",map);
+//		
+//		return callbackMsg;
+	
+//		return "board/boardList2";
+		
+		// JSON 데이터 생성
+	    String jsonResponse = "{ \"boardList\": " + getJsonArray(boardList) + ", \"totalCnt\": " + totalCnt + ", \"pageNo\": " + pageVo.getPageNo() + " }";
+	    
+	    return jsonResponse;
+		
+		
+	
+	}
+	
+	// List<BoardVo>를 JSON 배열 형태의 문자열로 변환하는 메서드
+		private String getJsonArray(List<BoardVo> boardList) throws IOException {
+			ObjectMapper objectMapper = new ObjectMapper();
+			return objectMapper.writeValueAsString(boardList);
+		}
+	
+	
+	
+
+	
+	
 	
 	@RequestMapping(value = "/board/{boardType}/{boardNum}/boardView.do", method = RequestMethod.GET)
 	public String boardView(Locale locale, Model model

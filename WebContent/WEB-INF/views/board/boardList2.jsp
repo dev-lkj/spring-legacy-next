@@ -14,7 +14,7 @@
 		$j("#findButton").on("click",function(){
 			var $frm = $j('#find :input');
 			var param = $frm.serialize();
-			var url = "/board/boardTypeList.do";
+			var url = "/board/boardtypeList.do";
 			
 			$j.ajax({
 			    url : url,
@@ -28,8 +28,7 @@
 					alert("메세지:"+data.success);
 					alert("메세지pageNo:"+data.pageNo);
 					
-					/* location.href = "/board/boardTypeList.do"; */
-					handleData(data);
+					/* location.href = "/board/boardList.do"; */
 
 					
 			    },
@@ -40,41 +39,6 @@
 			    } 
 			});
 		}); 
-		
-		// 데이터 가공 함수
-		function handleData(data) {
-			// 여기에서 data 객체를 가공하여 필요한 작업 수행
-			// 예시: boardList를 반복하며 출력
-			for (var i = 0; i < data.boardList.length; i++) {
-				// 받은 데이터를 기반으로 HTML 생성
-				var html = "";
-				for (var i = 0; i < data.boardList.length; i++) {
-					var board = data.boardList[i];
-					html += "<tr>";
-					html += "<td width='80' align='center'>" + getBoardType(board.boardType) + "</td>";
-					html += "<td width='40' align='center'>" + board.boardNum + "</td>";
-					html += "<td width='300'><a href='/board/" + board.boardType + "/" + board.boardNum + "/boardView.do?pageNo=" + data.pageNo + "'>" + board.boardTitle + "</a></td>";
-					html += "</tr>";
-					// 추가로 필요한 작업 수행
-				}
-				
-				// 생성한 HTML을 boardTable에 추가
-				$j("#boardTable").html(html);
-				
-				$j("#totalCnt").text("total : " + data.totalCnt);
-			}
-		}
-		
-		// 게시판 타입 변환 함수
-		function getBoardType(type) {
-			switch(type) {
-				case 'a01': return '일반';
-				case 'a02': return 'Q&A';
-				case 'a03': return '익명';
-				case 'a04': return '자유';
-				default: return '기타';
-			}
-		}
 		
 	});
 
@@ -91,7 +55,7 @@
 					</td>
 					<td width="40">
 					</td>
-					<td width="300" align="right" id="totalCnt">
+					<td width="300" align="right">
 						total : ${totalCnt}
 					</td>
 				</tr>
