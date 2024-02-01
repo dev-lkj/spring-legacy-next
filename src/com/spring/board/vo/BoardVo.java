@@ -2,6 +2,7 @@ package com.spring.board.vo;
 
 public class BoardVo {
 	
+	private String  codeName;
 	private String 	boardType;
 	private int 	boardNum;
 	private String 	boardTitle;
@@ -52,6 +53,12 @@ public class BoardVo {
 	}
 	public void setModifier(String modifier) {
 		this.modifier = modifier;
+	}
+	public String getCodeName() {
+		return codeName;
+	}
+	public void setCodeName(String codeName) {
+		this.codeName = codeName;
 	}
 	
 	

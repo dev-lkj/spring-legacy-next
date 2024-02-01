@@ -2,6 +2,7 @@ package com.spring.board.dao;
 
 import java.util.List;
 
+import com.spring.board.vo.ComcodeVo;
 import com.spring.board.vo.BoardVo;
 import com.spring.board.vo.PageVo;
 
@@ -15,11 +16,13 @@ public interface BoardDao {
 
 	public BoardVo selectBoard(BoardVo boardVo) throws Exception;
 	
-	
+	public List<ComcodeVo> selectComcode(List<BoardVo> listBoardVo) throws Exception;
 
 	public int selectBoardCnt() throws Exception;
 	
 	public int selectBoardTypeCnt(PageVo pageVo, String[] boardType) throws Exception;
+	
+	
 	
 
 	public int boardInsert(BoardVo boardVo) throws Exception;

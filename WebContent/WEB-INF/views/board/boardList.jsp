@@ -11,70 +11,97 @@
 
 	$j(document).ready(function(){
 		
-		$j("#findButton").on("click",function(){
-			var $frm = $j('#find :input');
-			var param = $frm.serialize();
-			var url = "/board/boardTypeList.do";
+		
+		
+		
+		$j("#findAll").on("click",function(){
+			var checked = $j("#findAll").is(":checked");			
 			
-			$j.ajax({
-			    url : url,
-			    dataType: "json",
-			    type: "GET",
-			    data : param,
-		 	    success: function(data, textStatus, jqXHR)
-			    {
-					alert("작성완료");
-					
-					alert("메세지:"+data.success);
-					alert("메세지pageNo:"+data.pageNo);
-					
-					/* location.href = "/board/boardTypeList.do"; */
-					handleData(data);
+			if(checked){
+				$j("input[name=boardType]").prop('checked',true);
+			}else{
+				$j("input[name=boardType]").prop('checked',false);
+			}
+		});
+		
+		$j("input[name=boardType]").on("click", function(){
+			var checkedCount = $j("input[name=boardType]:checked").length;
+	        var totalCount = $j("input[name=boardType]").length;
 
-					
-			    },
-			    error: function (jqXHR, textStatus, errorThrown)
-			    {
+	        if (checkedCount === totalCount) {
+	            $j("#findAll").prop('checked', true);
+	        }   
+	        else {
+	            $j("#findAll").prop('checked', false);
+	        }
+	    });
+		
+		
+		
 
-			    	alert("실패");
-			    } 
-			});
+		$j("#findButton").on("click",function(){
+			var checkedCount = $j("input[name=boardType]:checked").length;
+			var $frm;
+			var param; 
+			var url = "/board/boardTypeList.do";
+			if(checkedCount > 0){
+				var $frm = $j('#find :input');
+				var param = $frm.serialize(); 
+				
+				$j.ajax({
+				    url : url,
+				    dataType: "json",
+				    type: "GET",
+				    data : param,
+			 	    success: function(data, textStatus, jqXHR)
+				    {
+
+						handleData(data);
+						
+				    },
+				    error: function (jqXHR, textStatus, errorThrown)
+				    {
+
+				    	alert("실패");
+				    } 
+				});
+			} else{
+				return;
+			}
+
 		}); 
 		
 		// 데이터 가공 함수
 		function handleData(data) {
-			// 여기에서 data 객체를 가공하여 필요한 작업 수행
-			// 예시: boardList를 반복하며 출력
-			for (var i = 0; i < data.boardList.length; i++) {
-				// 받은 데이터를 기반으로 HTML 생성
-				var html = "";
+			var html = "";
+				html += "<table id='boardTable' border = '1'>";
+				html += "<tr>";
+				html += "<td width='80' align='center'>Type</td>";
+				html += "<td width='40' align='center'>No</td>";
+				html += "<td width='300' align='center'>Title</td>";
+				html += "</tr>";
+
+				$j("#boardTable").html(html);
 				for (var i = 0; i < data.boardList.length; i++) {
 					var board = data.boardList[i];
+					/* var codeName = data.boardType[i].codeName; */
+					console.log(board);
+					console.log("data",data);
+					
+
+	 
 					html += "<tr>";
-					html += "<td width='80' align='center'>" + getBoardType(board.boardType) + "</td>";
+					html += "<td width='80' align='center'>" + board.codeName + "</td>";
 					html += "<td width='40' align='center'>" + board.boardNum + "</td>";
 					html += "<td width='300'><a href='/board/" + board.boardType + "/" + board.boardNum + "/boardView.do?pageNo=" + data.pageNo + "'>" + board.boardTitle + "</a></td>";
 					html += "</tr>";
-					// 추가로 필요한 작업 수행
+					
 				}
 				
-				// 생성한 HTML을 boardTable에 추가
 				$j("#boardTable").html(html);
 				
 				$j("#totalCnt").text("total : " + data.totalCnt);
 			}
-		}
-		
-		// 게시판 타입 변환 함수
-		function getBoardType(type) {
-			switch(type) {
-				case 'a01': return '일반';
-				case 'a02': return 'Q&A';
-				case 'a03': return '익명';
-				case 'a04': return '자유';
-				default: return '기타';
-			}
-		}
 		
 	});
 
@@ -112,27 +139,10 @@
 						Title
 					</td>
 				</tr>
-				<c:forEach items="${boardList}" var="list">
+				<c:forEach items="${boardList}" var="list" varStatus="status">
 					<tr>
 						<td align="center">
-							<c:choose>
-								<c:when test="${list.boardType eq 'a01'}">
-									일반
-								</c:when>
-								<c:when test="${list.boardType eq 'a02'}">
-									Q&amp;A
-								</c:when>
-								<c:when test="${list.boardType eq 'a03'}">
-									익명
-								</c:when>
-								<c:when test="${list.boardType eq 'a04'}">
-									자유
-								</c:when>
-								<c:otherwise>
-									기타
-								</c:otherwise>
-							</c:choose>
-							<%-- ${list.boardType}  --%>
+							${boardType[status.index].codeName}
 						</td>
 						<td align="center">
 							${list.boardNum}
@@ -150,14 +160,14 @@
 			<a href ="/board/boardWrite.do">글쓰기</a>
 		</td>
 	</tr>
+	
 	<tr>
 		<td id="find">
-			<input id="findAll" type="checkbox" name="boardType" value="" /><label for="findAll">전체</label>
-			<input id="normal" type="checkbox" name="boardType" value="a01" /><label for="normal">일반</label>
-			<input id="qna" type="checkbox" name="boardType" value="a02" /><label for="qna">Q&amp;A</label>
-			<input id="anonymous" type="checkbox" name="boardType" value="a03" /><label for="anonymous">익명</label>
-			<input id="free" type="checkbox" name="boardType" value="a04" /><label for="free">자유</label>
-			<input type="hidden" name="pageNo" value="${pageNo}" />
+			<input id="findAll" type="checkbox" name="boardType" value="all" /><label for="findAll">전체</label>
+			<c:forEach var="board" items="${uniqueboardType}">
+				<input id="${board.codeId}" type="checkbox" name="boardType" value="${board.codeId}" /> <label for="${board.codeId}">${board.codeName}</label>
+			</c:forEach>
+			<input type="hidden" name="pageNo" value="${pageNo}" /> 
 			<button id="findButton">조회</button>
 		</td>	
 	</tr>

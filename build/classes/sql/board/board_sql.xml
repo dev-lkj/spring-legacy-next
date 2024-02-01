@@ -7,7 +7,16 @@
     	<result property="boardNum" 	column="BOARD_NUM"/>
     	<result property="boardTitle" 	column="BOARD_TITLE"/>
     	<result property="boardComment" column="BOARD_COMMENT"/>
+    	<result property="codeName" 	column="CODE_NAME"/>
     </resultMap>
+    
+    <resultMap type="com.spring.board.vo.ComcodeVo" id="comcodeVo">
+    	<result property="codeType" 	column="CODE_TYPE"/>
+    	<result property="codeId" 	column="CODE_ID"/>
+    	<result property="codeName" 	column="CODE_NAME"/>
+    </resultMap>
+    
+ 
     
     <select id="boardList" parameterType="com.spring.board.vo.PageVo" resultMap="boardVo">
         SELECT 
@@ -33,29 +42,33 @@
 
 	<select id="boardListByType" parameterType="map" resultMap="boardVo">
 	    SELECT 
-	        BOARD_TYPE,
-	        BOARD_NUM,
-	        BOARD_TITLE,
-	        BOARD_COMMENT,
-	        TOTAL_CNT
+	        b.BOARD_TYPE,
+	        b.BOARD_NUM,
+	        b.BOARD_TITLE,
+	        b.BOARD_COMMENT,
+	        c.CODE_NAME,
+	        TOTAL_CNT	        
 	    FROM 
 	    (
 	        SELECT
-	            BOARD_TYPE,
-	            BOARD_NUM,
-	            BOARD_TITLE,
-	            BOARD_COMMENT,
-	            ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW,
+	            b.BOARD_TYPE,
+	            b.BOARD_NUM,
+	            b.BOARD_TITLE,
+	            b.BOARD_COMMENT,
+	            ROW_NUMBER() OVER(ORDER BY b.BOARD_NUM DESC) AS NUMROW,
 	            COUNT(*) OVER() AS TOTAL_CNT
 	        FROM
-	            BOARD	            
+	            BOARD b )
+	            b
+	            LEFT JOIN COM_CODE c 
+	            ON b.BOARD_TYPE = c.CODE_ID        
 	        WHERE 
 	            BOARD_TYPE IN
 	            <foreach collection="boardTypes" item="boardType" open="(" separator="," close=")">
 	                #{boardType}
 	            </foreach>
-	    )
-	    WHERE NUMROW BETWEEN (#{pageVo.pageNo}-1)*10 + 1 AND (#{pageVo.pageNo})*10
+	    
+	    AND NUMROW BETWEEN (#{pageVo.pageNo}-1)*10 + 1 AND (#{pageVo.pageNo})*10
 	</select>
 	
 	 <select id="boardTypeTotal" parameterType="map" resultType="Integer">
@@ -141,9 +154,24 @@
     <delete id="boardDelete" parameterType="com.spring.board.vo.BoardVo">
        DELETE 
        FROM 
-       BOARD 
-       WHERE 
-       BOARD_TYPE = #{boardType} 
+       	BOARD 
+       WHERE BOARD_TYPE = #{boardType} 
        AND BOARD_NUM  = #{boardNum}
     </delete>
+    
+    
+    <select id="comCode" parameterType="java.util.List" resultMap="comcodeVo">
+        SELECT 
+		  c.CODE_NAME, c.CODE_ID
+		FROM 
+		  BOARD b 
+		  LEFT JOIN  COM_CODE c 
+		  ON b.BOARD_TYPE = c.CODE_ID
+		WHERE CODE_ID IN
+		<foreach collection="list" item="board" open="(" separator="," close=")">
+        	#{board.boardType}
+    	</foreach>
+    	
+    </select>
 </mapper>
+

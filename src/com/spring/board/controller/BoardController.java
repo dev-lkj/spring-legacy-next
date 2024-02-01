@@ -5,9 +5,12 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.spring.board.HomeController;
 import com.spring.board.service.boardService;
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.ComcodeVo;
 import com.spring.board.vo.PageVo;
 import com.spring.common.CommonUtil;
 import com.sun.org.glassfish.gmbal.ParameterNames;
@@ -58,8 +62,18 @@ public class BoardController {
 		
         boardList = boardService.selectBoardList(pageVo);
         totalCnt = boardService.selectBoardCnt();
-
-
+        List<ComcodeVo> comcodeList =boardService.selectComcode(boardList);
+        List<ComcodeVo> uniqueBoardTypeList = new ArrayList<>();
+        Set<String> uniqueBoardType = new LinkedHashSet<>();
+        
+        for(ComcodeVo comcode : comcodeList) {
+        	if(uniqueBoardType.add(comcode.getCodeId())) {
+        		uniqueBoardTypeList.add(comcode);
+        	}
+        }
+        
+        model.addAttribute("uniqueboardType", uniqueBoardTypeList);
+        model.addAttribute("boardType", comcodeList);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("pageNo", page);
@@ -73,7 +87,7 @@ public class BoardController {
 	@ResponseBody
 	public String boardTypeList(Locale locale, 
 			Model model, 
-			@RequestParam(value = "boardType", required = false, defaultValue = "") String[] boardType,
+			@RequestParam(value = "boardType", required = false, defaultValue = "") String[] boardTypes,
 			PageVo pageVo
 			) throws Exception{
 	
@@ -87,46 +101,31 @@ public class BoardController {
 		}
 		
 		
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> result = new HashMap<>();		
 		CommonUtil commonUtil = new CommonUtil();
 		
-	    boardList = boardService.selectBoardListByType(pageVo, boardType);
-	    totalCnt = boardService.selectBoardTypeCnt(pageVo, boardType);
-	       
-	      
 
-		model.addAttribute("boardList", boardList);
-		model.addAttribute("totalCnt", totalCnt);
-		model.addAttribute("pageNo", page);
-		
-//	        map.put("boardList", boardList);
-//	        map.put("totalCnt", totalCnt);
-//	        map.put("pageNo", pageVo.getPageNo());
-//	        
-//	        String callbackMsg = commonUtil.getJsonCallBackString(" ",map);
-//		
-//		return callbackMsg;
-	
-//		return "board/boardList2";
-		
-		// JSON 데이터 생성
-	    String jsonResponse = "{ \"boardList\": " + getJsonArray(boardList) + ", \"totalCnt\": " + totalCnt + ", \"pageNo\": " + pageVo.getPageNo() + " }";
+		if(boardTypes.length != 0) {
+			boardList = boardService.selectBoardListByType(pageVo, boardTypes);
+			
+		}else {
+			boardList = boardService.selectBoardList(pageVo);			
+		}
+
+	    totalCnt = boardService.selectBoardTypeCnt(pageVo, boardTypes);
+
+	    result.put("success", (boardList.size() > 0)?"Y":"N");
+	    result.put("boardList", boardList);
+	    result.put("totalCnt", totalCnt);
+	    result.put("pageNo", pageVo.getPageNo());	    
 	    
-	    return jsonResponse;
+	    String callbackMsg = commonUtil.getJsonCallBackString(" ",result);
+	    
+	    return callbackMsg;
 		
 		
 	
 	}
-	
-	// List<BoardVo>를 JSON 배열 형태의 문자열로 변환하는 메서드
-		private String getJsonArray(List<BoardVo> boardList) throws IOException {
-			ObjectMapper objectMapper = new ObjectMapper();
-			return objectMapper.writeValueAsString(boardList);
-		}
-	
-	
-	
-
 	
 	
 	
@@ -178,17 +177,12 @@ public class BoardController {
 	@RequestMapping(value = "/board/{boardType}/{boardNum}/boardEdit.do", method = RequestMethod.GET)
 	public String boardEdit(
 			Locale locale, 
-//			@PathVariable("boardType")String boardType,
-//			@PathVariable("boardNum")int boardNum,
 			BoardVo boardVo,
 			PageVo pageVo,
 			Model model
 			) throws Exception{
 
-		
-//		BoardVo boardVo = new BoardVo();
-		
-//		boardVo = boardService.selectBoard(boardType,boardNum);
+
 		boardVo = boardService.selectBoard(boardVo.getBoardType(),boardVo.getBoardNum());
 		
 		model.addAttribute("boardType", boardVo.getBoardType());

@@ -3,6 +3,7 @@ package com.spring.board.service;
 import java.util.List;
 
 import com.spring.board.vo.BoardVo;
+import com.spring.board.vo.ComcodeVo;
 import com.spring.board.vo.PageVo;
 
 public interface boardService {
@@ -14,6 +15,8 @@ public interface boardService {
 	public List<BoardVo> selectBoardListByType(PageVo pageVo, String[] boardType) throws Exception;
 
 	public BoardVo selectBoard(String boardType, int boardNum) throws Exception;
+	
+	public List<ComcodeVo> selectComcode(List<BoardVo> listBoardVo) throws Exception;
 
 	public int selectBoardCnt() throws Exception;
 	
