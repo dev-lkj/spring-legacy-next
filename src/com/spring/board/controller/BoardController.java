@@ -173,7 +173,7 @@ public class BoardController {
 		
 		
 		
-		return "board/boardList";
+		return "board/boardList2";
 	}
 	
 	
