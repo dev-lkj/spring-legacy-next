@@ -163,7 +163,7 @@
 	
 	<tr>
 		<td id="find">
-			<input id="findAll" type="checkbox" name="boardType" value="all" /><label for="findAll">전체</label>
+			<input id="findAll" type="checkbox" name="boardTypeAll" value="all" /><label for="findAll">전체</label>
 			<c:forEach var="board" items="${uniqueboardType}">
 				<input id="${board.codeId}" type="checkbox" name="boardType" value="${board.codeId}" /> <label for="${board.codeId}">${board.codeName}</label>
 			</c:forEach>

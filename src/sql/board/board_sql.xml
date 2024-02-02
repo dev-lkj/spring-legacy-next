@@ -24,19 +24,24 @@
 		  ,BOARD_NUM
 		  ,BOARD_TITLE
 		  ,BOARD_COMMENT
-		  ,TOTAL_CNT
+		  ,CODE_NAME
+		  ,TOTAL_CNT 
 		FROM 
 		(
 		  SELECT
-		      	BOARD_TYPE
-				,BOARD_NUM
-				,BOARD_TITLE
-				,BOARD_COMMENT
+		      	b.BOARD_TYPE
+				,b.BOARD_NUM
+				,b.BOARD_TITLE
+				,b.BOARD_COMMENT
+				,c.CODE_NAME
 		      	,ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW
 		      	,COUNT(*) OVER() AS TOTAL_CNT
 			FROM
-				BOARD
-		)
+				BOARD b 
+				LEFT JOIN 
+				COM_CODE c 
+	            ON b.BOARD_TYPE = c.CODE_ID    
+		) 
 		WHERE NUMROW BETWEEN (#{pageNo}-1)*10 + 1 AND (#{pageNo})*10
     </select>
 
@@ -46,7 +51,7 @@
 	        b.BOARD_NUM,
 	        b.BOARD_TITLE,
 	        b.BOARD_COMMENT,
-	        c.CODE_NAME,
+	        b.CODE_NAME,
 	        TOTAL_CNT	        
 	    FROM 
 	    (
@@ -55,11 +60,11 @@
 	            b.BOARD_NUM,
 	            b.BOARD_TITLE,
 	            b.BOARD_COMMENT,
+	            c.CODE_NAME,
 	            ROW_NUMBER() OVER(ORDER BY b.BOARD_NUM DESC) AS NUMROW,
 	            COUNT(*) OVER() AS TOTAL_CNT
 	        FROM
-	            BOARD b )
-	            b
+	            BOARD b 
 	            LEFT JOIN COM_CODE c 
 	            ON b.BOARD_TYPE = c.CODE_ID        
 	        WHERE 
@@ -67,8 +72,8 @@
 	            <foreach collection="boardTypes" item="boardType" open="(" separator="," close=")">
 	                #{boardType}
 	            </foreach>
-	    
-	    AND NUMROW BETWEEN (#{pageVo.pageNo}-1)*10 + 1 AND (#{pageVo.pageNo})*10
+	    ) b
+	    WHERE NUMROW BETWEEN (#{pageVo.pageNo}-1)*10 + 1 AND (#{pageVo.pageNo})*10
 	</select>
 	
 	 <select id="boardTypeTotal" parameterType="map" resultType="Integer">

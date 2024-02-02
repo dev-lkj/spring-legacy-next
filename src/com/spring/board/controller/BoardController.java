@@ -83,6 +83,7 @@ public class BoardController {
 		return "board/boardList";
 	}
 	
+	
 	@RequestMapping(value = "/board/boardTypeList.do", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String boardTypeList(Locale locale, 
@@ -92,26 +93,18 @@ public class BoardController {
 			) throws Exception{
 	
 		List<BoardVo> boardList = new ArrayList<BoardVo>();
+		Map<String, Object> result = new HashMap<>();		
+		CommonUtil commonUtil = new CommonUtil();
 		
 		int page = 1;
 		int totalCnt = 0;
 		
 		if(pageVo.getPageNo() == 0){
 			pageVo.setPageNo(page);
-		}
-		
-		
-		Map<String, Object> result = new HashMap<>();		
-		CommonUtil commonUtil = new CommonUtil();
+		}	
 		
 
-		if(boardTypes.length != 0) {
-			boardList = boardService.selectBoardListByType(pageVo, boardTypes);
-			
-		}else {
-			boardList = boardService.selectBoardList(pageVo);			
-		}
-
+		boardList = boardService.selectBoardListByType(pageVo, boardTypes);
 	    totalCnt = boardService.selectBoardTypeCnt(pageVo, boardTypes);
 
 	    result.put("success", (boardList.size() > 0)?"Y":"N");
