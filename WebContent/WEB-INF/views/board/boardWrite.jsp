@@ -55,10 +55,9 @@
 						</td>
 						<td width="400">
 						<select name="boardType">
-							<option value="a01">일반</option>
-							<option value="a02">Q&amp;A</option>
-							<option value="a03">익명</option>
-							<option value="a04">자유</option>
+							<c:forEach var="comCode" items="${comCode}">
+								<option value="${comCode.codeId}">${comCode.codeName}</option>
+							</c:forEach>
 						</select>						 
 						</td>
 					</tr>

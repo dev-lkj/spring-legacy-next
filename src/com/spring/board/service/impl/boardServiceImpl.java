@@ -61,8 +61,8 @@ public class boardServiceImpl implements boardService{
 	}
 	
 	@Override
-	public List<ComcodeVo> selectComcode(List<BoardVo> listBoardVo) throws Exception{
-		return boardDao.selectComcode(listBoardVo);
+	public List<ComcodeVo> selectComcode() throws Exception{
+		return boardDao.selectComcode();
 	}
 	
 	@Override

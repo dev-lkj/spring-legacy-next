@@ -43,20 +43,23 @@
 			var checkedCount = $j("input[name=boardType]:checked").length;
 			var $frm;
 			var param; 
-			var url = "/board/boardTypeList.do";
+			var url = "/board/boardTypeList2.do";
 			if(checkedCount > 0){
 				var $frm = $j('#find :input');
 				var param = $frm.serialize(); 
-				
-				$j.ajax({
+
+				 $j.ajax({
 				    url : url,
-				    dataType: "json",
+				    dataType: "html",
 				    type: "GET",
 				    data : param,
 			 	    success: function(data, textStatus, jqXHR)
 				    {
-
-						handleData(data);
+						$j("#table").html(data);
+						
+						
+						
+						 //handleData(data); 
 						
 				    },
 				    error: function (jqXHR, textStatus, errorThrown)
@@ -64,13 +67,18 @@
 
 				    	alert("실패");
 				    } 
+				    
 				});
-			} else{
+			} 
+			/* else{
 				return;
-			}
-
+			} */ 
+			
+			
+				
 		}); 
-		
+	
+	
 		// 데이터 가공 함수
 		function handleData(data) {
 			var html = "";
@@ -107,7 +115,7 @@
 
 </script>
 <body>
-<table  align="center">
+<table id="table" align="center">
 	<tr>
 		<td>
 			<table>
@@ -142,7 +150,7 @@
 				<c:forEach items="${boardList}" var="list" varStatus="status">
 					<tr>
 						<td align="center">
-							${boardType[status.index].codeName}
+							${list.codeName}
 						</td>
 						<td align="center">
 							${list.boardNum}
@@ -158,19 +166,20 @@
 	<tr>
 		<td align="right">
 			<a href ="/board/boardWrite.do">글쓰기</a>
+			<br/>
 		</td>
 	</tr>
 	
 	<tr>
 		<td id="find">
 			<input id="findAll" type="checkbox" name="boardTypeAll" value="all" /><label for="findAll">전체</label>
-			<c:forEach var="board" items="${uniqueboardType}">
+			<c:forEach var="board" items="${comcodeList}">
 				<input id="${board.codeId}" type="checkbox" name="boardType" value="${board.codeId}" /> <label for="${board.codeId}">${board.codeName}</label>
 			</c:forEach>
 			<input type="hidden" name="pageNo" value="${pageNo}" /> 
 			<button id="findButton">조회</button>
 		</td>	
 	</tr>
-</table>	
+</table>
 </body>
 </html>

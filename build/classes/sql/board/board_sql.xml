@@ -47,22 +47,22 @@
 
 	<select id="boardListByType" parameterType="map" resultMap="boardVo">
 	    SELECT 
-	        b.BOARD_TYPE,
-	        b.BOARD_NUM,
-	        b.BOARD_TITLE,
-	        b.BOARD_COMMENT,
-	        b.CODE_NAME,
-	        TOTAL_CNT	        
+	        b.BOARD_TYPE
+	        ,b.BOARD_NUM
+	        ,b.BOARD_TITLE
+	        ,b.BOARD_COMMENT
+	        ,b.CODE_NAME
+			,TOTAL_CNT	        
 	    FROM 
 	    (
 	        SELECT
-	            b.BOARD_TYPE,
-	            b.BOARD_NUM,
-	            b.BOARD_TITLE,
-	            b.BOARD_COMMENT,
-	            c.CODE_NAME,
-	            ROW_NUMBER() OVER(ORDER BY b.BOARD_NUM DESC) AS NUMROW,
-	            COUNT(*) OVER() AS TOTAL_CNT
+	            b.BOARD_TYPE
+	            ,b.BOARD_NUM
+	            ,b.BOARD_TITLE
+	            ,b.BOARD_COMMENT
+	            ,c.CODE_NAME
+	            ,ROW_NUMBER() OVER(ORDER BY b.BOARD_NUM DESC) AS NUMROW
+	            ,COUNT(*) OVER() AS TOTAL_CNT
 	        FROM
 	            BOARD b 
 	            LEFT JOIN COM_CODE c 
@@ -165,18 +165,14 @@
     </delete>
     
     
-    <select id="comCode" parameterType="java.util.List" resultMap="comcodeVo">
+    <select id="comCode" parameterType="com.spring.board.vo.ComcodeVo" resultMap="comcodeVo" >
         SELECT 
-		  c.CODE_NAME, c.CODE_ID
+		  CODE_NAME
+		  ,CODE_ID
 		FROM 
-		  BOARD b 
-		  LEFT JOIN  COM_CODE c 
-		  ON b.BOARD_TYPE = c.CODE_ID
-		WHERE CODE_ID IN
-		<foreach collection="list" item="board" open="(" separator="," close=")">
-        	#{board.boardType}
-    	</foreach>
-    	
+			COM_CODE
+		WHERE
+		 ROWNUM &lt;=4
     </select>
 </mapper>
 

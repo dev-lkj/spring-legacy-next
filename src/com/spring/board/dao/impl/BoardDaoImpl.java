@@ -69,16 +69,16 @@ public class BoardDaoImpl implements BoardDao{
 	}
 	
 	@Override
-	public List<ComcodeVo> selectComcode(List<BoardVo> listBoardVo) throws Exception {
+	public List<ComcodeVo> selectComcode() throws Exception {
 		// TODO Auto-generated method stub
 //		Map<String, Object> map = new HashMap<>();
 //		map.put("boardTypes", boardTypes);
-		List<ComcodeVo> comodeVoList = new ArrayList<>();
-		for (BoardVo listBoardVo2 : listBoardVo) {
-			System.out.println("::::"+listBoardVo2.getBoardType());
-			comodeVoList.addAll(sqlSession.selectList("board.comCode", listBoardVo));
-		}
-		return comodeVoList;
+//		List<ComcodeVo> comodeVoList = new ArrayList<>();
+//		for (BoardVo listBoardVo2 : listBoardVo) {
+//			System.out.println("::::"+listBoardVo2.getBoardType());
+//			comodeVoList.addAll(sqlSession.selectList("board.comCode", listBoardVo));
+//		}
+		return sqlSession.selectList("board.comCode");
 	}
 	
 	

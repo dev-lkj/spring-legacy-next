@@ -16,7 +16,7 @@ public interface boardService {
 
 	public BoardVo selectBoard(String boardType, int boardNum) throws Exception;
 	
-	public List<ComcodeVo> selectComcode(List<BoardVo> listBoardVo) throws Exception;
+	public List<ComcodeVo> selectComcode() throws Exception;
 
 	public int selectBoardCnt() throws Exception;
 	

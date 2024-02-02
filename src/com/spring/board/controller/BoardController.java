@@ -62,18 +62,10 @@ public class BoardController {
 		
         boardList = boardService.selectBoardList(pageVo);
         totalCnt = boardService.selectBoardCnt();
-        List<ComcodeVo> comcodeList =boardService.selectComcode(boardList);
-        List<ComcodeVo> uniqueBoardTypeList = new ArrayList<>();
-        Set<String> uniqueBoardType = new LinkedHashSet<>();
+        List<ComcodeVo> comcodeList = boardService.selectComcode();
         
-        for(ComcodeVo comcode : comcodeList) {
-        	if(uniqueBoardType.add(comcode.getCodeId())) {
-        		uniqueBoardTypeList.add(comcode);
-        	}
-        }
-        
-        model.addAttribute("uniqueboardType", uniqueBoardTypeList);
-        model.addAttribute("boardType", comcodeList);
+
+        model.addAttribute("comcodeList", comcodeList);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("pageNo", page);
@@ -103,23 +95,57 @@ public class BoardController {
 			pageVo.setPageNo(page);
 		}	
 		
-
 		boardList = boardService.selectBoardListByType(pageVo, boardTypes);
 	    totalCnt = boardService.selectBoardTypeCnt(pageVo, boardTypes);
-
+		
 	    result.put("success", (boardList.size() > 0)?"Y":"N");
 	    result.put("boardList", boardList);
 	    result.put("totalCnt", totalCnt);
-	    result.put("pageNo", pageVo.getPageNo());	    
+	    result.put("pageNo", pageVo.getPageNo());
+
 	    
 	    String callbackMsg = commonUtil.getJsonCallBackString(" ",result);
+		
+
 	    
+		
 	    return callbackMsg;
 		
 		
 	
 	}
 	
+	
+	
+	@RequestMapping(value = "/board/boardTypeList2.do", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+	public String boardTypeLis2(Locale locale, 
+			Model model, 
+			@RequestParam(value = "boardType", required = false, defaultValue = "") String[] boardTypes,
+			PageVo pageVo
+			) throws Exception{
+	
+		List<BoardVo> boardList = new ArrayList<BoardVo>();
+		
+		int page = 1;
+		int totalCnt = 0;
+		
+		if(pageVo.getPageNo() == 0){
+			pageVo.setPageNo(page);
+		}	
+		
+		boardList = boardService.selectBoardListByType(pageVo, boardTypes);
+		totalCnt = boardService.selectBoardTypeCnt(pageVo, boardTypes);
+		List<ComcodeVo> comcodeList = boardService.selectComcode();
+		
+        model.addAttribute("comcodeList", comcodeList);
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("totalCnt", totalCnt);
+		model.addAttribute("pageNo", pageVo.getPageNo());
+		
+		
+		
+		return "board/boardList";
+	}
 	
 	
 	@RequestMapping(value = "/board/{boardType}/{boardNum}/boardView.do", method = RequestMethod.GET)
@@ -144,7 +170,20 @@ public class BoardController {
 	@RequestMapping(value = "/board/boardWrite.do", method = RequestMethod.GET)
 	public String boardWrite(Locale locale, Model model, PageVo pageVo) throws Exception{
 		
+		List<ComcodeVo> comcodeList = boardService.selectComcode();
+		List<ComcodeVo> comcodeList2 = new ArrayList<>();
+        Set<String> comcode = new LinkedHashSet<>();
+        
+        for(ComcodeVo comCode : comcodeList) {
+        	if(comcode.add(comCode.getCodeId())) {
+        		comcodeList2.add(comCode);
+        	}
+        }
+		
+		model.addAttribute("comCode", comcodeList2);		
 		model.addAttribute("pageNo", pageVo.getPageNo());
+		
+		
 		return "board/boardWrite";
 	}
 	
@@ -243,3 +282,4 @@ public class BoardController {
 	
 	
 }
+

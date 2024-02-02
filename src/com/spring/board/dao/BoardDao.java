@@ -16,7 +16,7 @@ public interface BoardDao {
 
 	public BoardVo selectBoard(BoardVo boardVo) throws Exception;
 	
-	public List<ComcodeVo> selectComcode(List<BoardVo> listBoardVo) throws Exception;
+	public List<ComcodeVo> selectComcode() throws Exception;
 
 	public int selectBoardCnt() throws Exception;
 	

@@ -11,40 +11,70 @@
 
 	$j(document).ready(function(){
 		
-		$j("#findButton").on("click",function(){
-			var $frm = $j('#find :input');
-			var param = $frm.serialize();
-			var url = "/board/boardtypeList.do";
+		
+		
+		
+		$j("#findAll").on("click",function(){
+			var checked = $j("#findAll").is(":checked");			
 			
-			$j.ajax({
-			    url : url,
-			    dataType: "json",
-			    type: "GET",
-			    data : param,
-		 	    success: function(data, textStatus, jqXHR)
-			    {
-					alert("작성완료");
-					
-					alert("메세지:"+data.success);
-					alert("메세지pageNo:"+data.pageNo);
-					
-					/* location.href = "/board/boardList.do"; */
+			if(checked){
+				$j("input[name=boardType]").prop('checked',true);
+			}else{
+				$j("input[name=boardType]").prop('checked',false);
+			}
+		});
+		
+		$j("input[name=boardType]").on("click", function(){
+			var checkedCount = $j("input[name=boardType]:checked").length;
+	        var totalCount = $j("input[name=boardType]").length;
 
-					
-			    },
-			    error: function (jqXHR, textStatus, errorThrown)
-			    {
+	        if (checkedCount === totalCount) {
+	            $j("#findAll").prop('checked', true);
+	        }   
+	        else {
+	            $j("#findAll").prop('checked', false);
+	        }
+	    });
+		
+		
+		
 
-			    	alert("실패");
-			    } 
-			});
+		$j("#findButton").on("click",function(){
+			var checkedCount = $j("input[name=boardType]:checked").length;
+			var $frm;
+			var param; 
+			var url = "/board/boardTypeList2.do";
+			if(checkedCount > 0){
+				var $frm = $j('#find :input');
+				var param = $frm.serialize(); 
+
+				 $j.ajax({
+				    url : url,
+				    dataType: "html",
+				    type: "GET",
+				    data : param,
+			 	    success: function(data, textStatus, jqXHR)
+				    {
+			 	    	alert("확인");
+						$j("#table").html(data);
+				    },
+				    error: function (jqXHR, textStatus, errorThrown)
+				    {
+
+				    	alert("실패");
+				    } 
+				    
+				});
+			} 		
+				
 		}); 
+	
 		
 	});
 
 </script>
 <body>
-<table  align="center">
+<table id="table" align="center">
 	<tr>
 		<td>
 			<table>
@@ -55,7 +85,7 @@
 					</td>
 					<td width="40">
 					</td>
-					<td width="300" align="right">
+					<td width="300" align="right" id="totalCnt">
 						total : ${totalCnt}
 					</td>
 				</tr>
@@ -79,24 +109,7 @@
 				<c:forEach items="${boardList}" var="list">
 					<tr>
 						<td align="center">
-							<c:choose>
-								<c:when test="${list.boardType eq 'a01'}">
-									일반
-								</c:when>
-								<c:when test="${list.boardType eq 'a02'}">
-									Q&amp;A
-								</c:when>
-								<c:when test="${list.boardType eq 'a03'}">
-									익명
-								</c:when>
-								<c:when test="${list.boardType eq 'a04'}">
-									자유
-								</c:when>
-								<c:otherwise>
-									기타
-								</c:otherwise>
-							</c:choose>
-							<%-- ${list.boardType}  --%>
+							${list.codeName}
 						</td>
 						<td align="center">
 							${list.boardNum}
@@ -112,16 +125,17 @@
 	<tr>
 		<td align="right">
 			<a href ="/board/boardWrite.do">글쓰기</a>
+			<br/>
 		</td>
 	</tr>
+	
 	<tr>
 		<td id="find">
-			<input id="findAll" type="checkbox" name="boardType" value="" /><label for="findAll">전체</label>
-			<input id="normal" type="checkbox" name="boardType" value="a01" /><label for="normal">일반</label>
-			<input id="qna" type="checkbox" name="boardType" value="a02" /><label for="qna">Q&amp;A</label>
-			<input id="anonymous" type="checkbox" name="boardType" value="a03" /><label for="anonymous">익명</label>
-			<input id="free" type="checkbox" name="boardType" value="a04" /><label for="free">자유</label>
-			<input type="hidden" name="pageNo" value="${pageNo}" />
+			<input id="findAll" type="checkbox" name="boardTypeAll" value="all" /><label for="findAll">전체</label>
+			<c:forEach var="board" items="${comcodeList}">
+				<input id="${board.codeId}" type="checkbox" name="boardType" value="${board.codeId}" /> <label for="${board.codeId}">${board.codeName}</label>
+			</c:forEach>
+			<input type="hidden" name="pageNo" value="${pageNo}" /> 
 			<button id="findButton">조회</button>
 		</td>	
 	</tr>
