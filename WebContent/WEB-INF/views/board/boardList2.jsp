@@ -11,7 +11,8 @@
 
 	$j(document).ready(function(){
 		
-		
+		// 이전 페이지에서 선택한 boardType 값을 변수에 저장
+	    selectedBoardType = $j("input[name=boardType]:checked").val();
 		
 		
 		$j("#findAll").on("click",function(){
@@ -41,12 +42,23 @@
 
 		$j("#findButton").on("click",function(){
 			var checkedCount = $j("input[name=boardType]:checked").length;
-			var $frm;
-			var param; 
+			var $frm = $j('#find :input');
+			/* var param;  */
 			var url = "/board/boardTypeList2.do";
+			
+             // 이전 페이지에서 선택한 boardType 값을 변수에 저장
+    		var selectedBoardType = $j("input[name=boardType]:checked").val();
+			 
+            var param = $frm.serialize();
 			if(checkedCount > 0){
-				var $frm = $j('#find :input');
-				var param = $frm.serialize(); 
+				
+				 
+				
+				if (checkedCount === 0) {
+	                $frm.append("<input type='hidden' name='boardType' value='" + selectedBoardType + "' />");
+	            }
+				
+				var param = $frm.serialize();
 
 				 $j.ajax({
 				    url : url,
@@ -138,6 +150,22 @@
 			<input type="hidden" name="pageNo" value="${pageNo}" /> 
 			<button id="findButton">조회</button>
 		</td>	
+	</tr>
+	
+	<tr>
+		<td align="right" id="page">
+			<%-- <input type="hidden" name="boardType" value="${pageNo}" />  --%>
+			<c:forEach var="pageNumber" begin="${startPage}" end="${endPage}" step="1">
+			    <c:choose>
+			        <c:when test="${pageNumber == currentPage}">
+			            <b>${pageNumber}</b>&nbsp;&nbsp;
+			        </c:when>
+			        <c:otherwise>
+			            <a href="/board/boardTypeList2.do?pageNo=${pageNumber}" name="pageNo" title="page">${pageNumber}</a>&nbsp;&nbsp;            
+			        </c:otherwise>
+			    </c:choose>
+			</c:forEach>
+		</td>
 	</tr>
 </table>	
 </body>

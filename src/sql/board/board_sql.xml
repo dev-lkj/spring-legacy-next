@@ -96,7 +96,7 @@
 			                #{boardType}
 			            </foreach>
 			    )
-			WHERE NUMROW BETWEEN (#{pageVo.pageNo}-1)*10 + 1 AND (#{pageVo.pageNo})*10
+			<!-- WHERE NUMROW BETWEEN (#{pageVo.pageNo}-1)*10 + 1 AND (#{pageVo.pageNo})*10 -->
     </select>
  
     

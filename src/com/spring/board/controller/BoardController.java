@@ -64,7 +64,21 @@ public class BoardController {
         totalCnt = boardService.selectBoardCnt();
         List<ComcodeVo> comcodeList = boardService.selectComcode();
         
-
+        int currentPage = (pageVo.getPageNo() != 0) ? pageVo.getPageNo() : 1;
+        int totalPosts = totalCnt; // 전체 게시물 수 (예시용으로 100으로 설정)
+        int postsPerPage = 10;
+        int totalPages = (int) Math.ceil((double) totalPosts / postsPerPage);
+        int visiblePages = 10; // 보여줄 페이지 링크 개수
+        int pageGroup = (int) Math.ceil((double) currentPage / visiblePages);
+        int startPage = (pageGroup - 1) * visiblePages + 1;
+        int endPage = Math.min(startPage + visiblePages - 1, totalPages);
+        
+        
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        
+        
         model.addAttribute("comcodeList", comcodeList);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("totalCnt", totalCnt);
@@ -137,6 +151,21 @@ public class BoardController {
 		totalCnt = boardService.selectBoardTypeCnt(pageVo, boardTypes);
 		List<ComcodeVo> comcodeList = boardService.selectComcode();
 		
+		int currentPage = (pageVo.getPageNo() != 0) ? pageVo.getPageNo() : 1;
+	    int totalPosts = totalCnt; // 전체 게시물 수 (예시용으로 100으로 설정)
+	    int postsPerPage = 10;
+	    int totalPages = (int) Math.ceil((double) totalPosts / postsPerPage);
+	    int visiblePages = 10; // 보여줄 페이지 링크 개수
+	    int pageGroup = (int) Math.ceil((double) currentPage / visiblePages);
+	    int startPage = (pageGroup - 1) * visiblePages + 1;
+	    int endPage = Math.min(startPage + visiblePages - 1, totalPages);
+	        
+	        
+	    model.addAttribute("currentPage", currentPage);
+	    model.addAttribute("startPage", startPage);
+	    model.addAttribute("endPage", endPage);
+        
+		
         model.addAttribute("comcodeList", comcodeList);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("totalCnt", totalCnt);
@@ -171,16 +200,8 @@ public class BoardController {
 	public String boardWrite(Locale locale, Model model, PageVo pageVo) throws Exception{
 		
 		List<ComcodeVo> comcodeList = boardService.selectComcode();
-		List<ComcodeVo> comcodeList2 = new ArrayList<>();
-        Set<String> comcode = new LinkedHashSet<>();
-        
-        for(ComcodeVo comCode : comcodeList) {
-        	if(comcode.add(comCode.getCodeId())) {
-        		comcodeList2.add(comCode);
-        	}
-        }
 		
-		model.addAttribute("comCode", comcodeList2);		
+		model.addAttribute("comCode", comcodeList);		
 		model.addAttribute("pageNo", pageVo.getPageNo());
 		
 		

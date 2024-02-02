@@ -69,11 +69,7 @@
 				    } 
 				    
 				});
-			} 
-			/* else{
-				return;
-			} */ 
-			
+			  } 	
 			
 				
 		}); 
@@ -179,6 +175,21 @@
 			<input type="hidden" name="pageNo" value="${pageNo}" /> 
 			<button id="findButton">Á¶È¸</button>
 		</td>	
+	</tr>
+	
+	<tr>
+		<td align="right">
+			<c:forEach var="pageNumber" begin="${startPage}" end="${endPage}" step="1">
+			    <c:choose>
+			        <c:when test="${pageNumber == currentPage}">
+			            <b>${pageNumber}</b>&nbsp;&nbsp;
+			        </c:when>
+			        <c:otherwise>
+			            <a href="/board/boardList.do?pageNo=${pageNumber}" title="page">${pageNumber}</a>&nbsp;&nbsp;
+			        </c:otherwise>
+			    </c:choose>
+			</c:forEach>
+		</td>
 	</tr>
 </table>
 </body>
