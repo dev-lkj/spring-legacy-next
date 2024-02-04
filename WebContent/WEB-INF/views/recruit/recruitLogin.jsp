@@ -9,36 +9,10 @@
 </head>
 <script type="text/javascript">
 
-	$j(document).ready(function(){
-		var url = "/recruit/Login";
-		$j.ajax({
-		    url : url,
-		    dataType: "json",
-		    type: "GET",
-		    data : param,
-	 	    success: function(data, textStatus, jqXHR)
-		    {
-				alert("성공");
-				
-		    },
-		    error: function (jqXHR, textStatus, errorThrown)
-		    {
-
-		    	alert("실패");
-		    } 
-		    
-		});
-		
-		
-
-	
-	
-		
-	});
 
 </script>
 <body>
-<form action="/recruit/main" method="POST">
+<form action="/recruit/login" method="POST">
 <table id="boardTable" align="center" border="2">
 	<tr align="center" style="font-weight:bold;">
 		<td>

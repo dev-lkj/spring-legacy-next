@@ -2,14 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="recruit">
+   
     <resultMap type="com.spring.recruit.vo.RecruitVo" id="RecruitVo">
-    	<result property="boardType" 	column="BOARD_TYPE"/>
-    	<result property="boardNum" 	column="BOARD_NUM"/>
-    	<result property="boardTitle" 	column="BOARD_TITLE"/>
-    	<result property="boardComment" column="BOARD_COMMENT"/>
-    	<result property="codeName" 	column="CODE_NAME"/>
+    	<result property="name" 	column="NAME"/>
+    	<result property="birth" 	column="BIRTH"/>
+    	<result property="gender" 	column="GENDER"/>
+    	<result property="phone" column="PHONE"/>
+    	<result property="email" 	column="EMAIL"/>
+    	<result property="addr" 	column="ADDR"/>
+    	<result property="location" 	column="LOCATION"/>
+    	<result property="work_type" 	column="WORK_TYPE"/>
     </resultMap>
     
+    <select id="recruitLogin" parameterType="com.spring.recruit.vo.RecruitVo" resultMap="RecruitVo">
+        SELECT 
+		  NAME
+		  ,BIRTH
+		  ,GENDER
+		  ,PHONE
+		  ,EMAIL
+		  ,ADDR
+		  ,LOCATION
+		  ,WORK_TYPE
+		FROM 
+			RECRUIT
+		WHERE
+			NAME = #{name} AND PHONE = #{phone}
+    </select>
 
     
  

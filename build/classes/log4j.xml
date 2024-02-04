@@ -20,6 +20,10 @@
 	<logger name="com.spring.board">
 		<level value="info" />
 	</logger>
+	<logger name="com.spring.recruit">
+		<level value="info" />
+	</logger>
+	
 
 	<!-- Query Loggers -->
     <logger name="jdbc.sqlonly" additivity="false">  

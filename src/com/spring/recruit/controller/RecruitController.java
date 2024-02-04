@@ -12,7 +12,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.annotations.Param;
 import org.codehaus.jackson.JsonProcessingException;
@@ -31,7 +33,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.board.HomeController;
 import com.spring.common.CommonUtil;
-import com.spring.recruit.service.impl.RecruitService;
+import com.spring.recruit.service.RecruitService;
+import com.spring.recruit.service.impl.RecruitServiceImpl;
 import com.spring.recruit.vo.LoginVo;
 import com.spring.recruit.vo.MainVo;
 import com.spring.recruit.vo.PageVo;
@@ -40,63 +43,65 @@ import com.sun.org.glassfish.gmbal.ParameterNames;
 
 @Controller
 public class RecruitController {
+	
+	
+	RecruitService recruitService = new RecruitServiceImpl();
+	
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-	@RequestMapping(value = "/recruit/recruitList", method = RequestMethod.GET)
-	public String boardList(Locale locale, Model model, PageVo pageVo) throws Exception {
-
-		List<RecruitVo> recruitList = new ArrayList<RecruitVo>();
-
-		int page = 1;
-		int totalCnt = 0;
-
-		if (pageVo.getPageNo() == 0) {
-			pageVo.setPageNo(page);
-		}
-
-//		
-//		recruitList = recruitService.selectBoardList(pageVo);
-//        totalCnt = recruitService.selectBoardCnt();
-//       
-
-//
-//		model.addAttribute("recruitList", recruitList);
-//		model.addAttribute("totalCnt", totalCnt);
-//		model.addAttribute("pageNo", page);
-//		
-
-		return "recruit/recruitList";
+	
+	@RequestMapping(value = "/recruit/login", method = RequestMethod.GET)
+	public String recruitLogin(Locale locale) throws Exception {
+		
+		return "recruit/recruitLogin";
 	}
 
-//	@RequestMapping(value = "/recruit/login", method = RequestMethod.GET)
-//	public String recruitLogin(Locale locale) throws Exception {
-//
-//		return "recruit/recruitLogin";
-//	}
-//
-//	@RequestMapping(value = "/recruit/login", method = RequestMethod.POST)
-//	public String recruitLoginPost(Locale locale, LoginVo loginVo, Model model) throws Exception {
-//
-//		model.addAttribute("login", loginVo);
-//
-//		return "redirect:/recruit/main";
-//	}
-//
-//	
-//	 @RequestMapping(value = "/recruit/main", method = RequestMethod.POST)
-//	 public String recruitMain(Locale locale, 
-//			 LoginVo loginVo,
-//			 MainVo mainVo,
-//			 Model model ) throws
-//	  Exception{
-//	  
-//	   model.addAttribute("login", loginVo);
-//	   model.addAttribute("main", mainVo);
-//	  
-//	  return "recruit/recruitMain"; 
-//	  
-//	 }
+	@RequestMapping(value = "/recruit/login", method = RequestMethod.POST)
+	public String recruitLoginPost(Locale locale, 
+				RecruitVo recruitVo, 
+				Model model,
+				HttpSession session
+			) throws Exception {
+		System.out.println(":::"+recruitVo.getName());
+		System.out.println(":::"+recruitVo.getPhone());
+		
+		String returnURL = "";
+		if(session.getAttribute("login") != null) {
+			session.removeAttribute("login");
+		}
+		
+		System.out.println(recruitService.recruitLogin(recruitVo));
+		
+		int loginvo = recruitService.recruitLogin(recruitVo);
+		System.out.println("::::"+loginvo);
+
+		if(loginvo == 1) { // 로그인 성공
+			System.out.println("로그인 성공");
+			session.setAttribute("login", recruitVo);
+			returnURL = "redirect:/recruit/main";
+		} else {
+			System.out.println("로그인 실패");
+			returnURL = "redirect:/recruit/login";
+		}
+
+		return returnURL;
+	}
+
+	
+	 @RequestMapping(value = "/recruit/main", method = RequestMethod.GET)
+	 public String recruitMain(Locale locale, 
+			 HttpSession session,
+			 RecruitVo recruitVo,
+			 Model model ) throws
+	  Exception{
+		RecruitVo loginVo = (RecruitVo) session.getAttribute("login");
+	   model.addAttribute("login", loginVo);
+	   model.addAttribute("main", recruitVo);
+	  
+	  return "recruit/recruitMain"; 
+	  
+	 }
 	 
 
 }

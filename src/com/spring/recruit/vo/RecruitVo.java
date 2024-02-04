@@ -2,64 +2,67 @@ package com.spring.recruit.vo;
 
 public class RecruitVo {
 	
-	private String  codeName;
-	private String 	boardType;
-	private int 	boardNum;
-	private String 	boardTitle;
-	private String 	boardComment;
-	private String 	creator;
-	private String	modifier;
-	private int totalCnt;
+	private String  name;
+	private String 	birth;
+	private String 	gender;
+	private String 	phone;
+	private String 	email;
+	private String 	addr;
+	private String	location;
+	private String	work_type;
 	
 	
-	public int getTotalCnt() {
-		return totalCnt;
+	public String getName() {
+		return name;
 	}
-	public void setTotalCnt(int totalCnt) {
-		this.totalCnt = totalCnt;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public int getBoardNum() {
-		return boardNum;
+	public String getBirth() {
+		return birth;
 	}
-	public void setBoardNum(int boardNum) {
-		this.boardNum = boardNum;
+	public void setBirth(String birth) {
+		this.birth = birth;
 	}
-	public String getBoardType() {
-		return boardType;
+	public String getGender() {
+		return gender;
 	}
-	public void setBoardType(String boardType) {
-		this.boardType = boardType;
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
-	public String getBoardTitle() {
-		return boardTitle;
+	public String getPhone() {
+		return phone;
 	}
-	public void setBoardTitle(String boardTitle) {
-		this.boardTitle = boardTitle;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
-	public String getBoardComment() {
-		return boardComment;
+	public String getEmail() {
+		return email;
 	}
-	public void setBoardComment(String boardComment) {
-		this.boardComment = boardComment;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	public String getCreator() {
-		return creator;
+	public String getAddr() {
+		return addr;
 	}
-	public void setCreator(String creator) {
-		this.creator = creator;
+	public void setAddr(String addr) {
+		this.addr = addr;
 	}
-	public String getModifier() {
-		return modifier;
+	public String getLocation() {
+		return location;
 	}
-	public void setModifier(String modifier) {
-		this.modifier = modifier;
+	public void setLocation(String location) {
+		this.location = location;
 	}
-	public String getCodeName() {
-		return codeName;
+	public String getWork_type() {
+		return work_type;
 	}
-	public void setCodeName(String codeName) {
-		this.codeName = codeName;
+	public void setWork_type(String work_type) {
+		this.work_type = work_type;
 	}
+
+	
+	
 	
 	
 }
