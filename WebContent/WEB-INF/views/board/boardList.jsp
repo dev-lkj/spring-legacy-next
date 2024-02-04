@@ -43,7 +43,7 @@
 			var checkedCount = $j("input[name=boardType]:checked").length;
 			var $frm;
 			var param; 
-			var url = "/board/boardTypeList2.do";
+			var url = "/board/boardList.do";
 			if(checkedCount > 0){
 				var $frm = $j('#find :input');
 				var param = $frm.serialize(); 

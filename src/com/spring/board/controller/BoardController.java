@@ -47,6 +47,7 @@ public class BoardController {
 	
 	@RequestMapping(value = "/board/boardList.do", method = RequestMethod.GET)
 	public String boardList(Locale locale, 
+			@RequestParam(value = "boardType", required = false, defaultValue = "") String[] boardTypes,
 			Model model, 
 			PageVo pageVo) throws Exception{
 	
@@ -59,8 +60,12 @@ public class BoardController {
 			pageVo.setPageNo(page);
 		}
 		
-		
-        boardList = boardService.selectBoardList(pageVo);
+		if(boardTypes.length == 0) {
+			boardList = boardService.selectBoardList(pageVo);
+		} else {
+			boardList = boardService.selectBoardListByType(pageVo, boardTypes);
+		}
+        
         totalCnt = boardService.selectBoardCnt();
         List<ComcodeVo> comcodeList = boardService.selectComcode();
         
@@ -173,7 +178,7 @@ public class BoardController {
 		
 		
 		
-		return "board/boardList2";
+		return "board/boardList";
 	}
 	
 	

@@ -33,6 +33,7 @@ import com.spring.board.HomeController;
 import com.spring.common.CommonUtil;
 import com.spring.recruit.service.impl.RecruitService;
 import com.spring.recruit.vo.LoginVo;
+import com.spring.recruit.vo.MainVo;
 import com.spring.recruit.vo.PageVo;
 import com.spring.recruit.vo.RecruitVo;
 import com.sun.org.glassfish.gmbal.ParameterNames;
@@ -68,34 +69,34 @@ public class RecruitController {
 		return "recruit/recruitList";
 	}
 
-	@RequestMapping(value = "/recruit/login", method = RequestMethod.GET)
-	public String recruitLogin(Locale locale) throws Exception {
-
-		return "recruit/recruitLogin";
-	}
-
-	@RequestMapping(value = "/recruit/login", method = RequestMethod.POST)
-	public String recruitLoginPost(Locale locale, LoginVo loginVo, Model model) throws Exception {
-
-		model.addAttribute("login", loginVo);
-
-		return "redirect:/recruit/main";
-	}
-
-	
-	 @RequestMapping(value = "/recruit/main", method = RequestMethod.POST)
-	 public String recruitMain(Locale locale, 
-			 LoginVo loginVo,
-			 MainVo mainVo,
-			 Model model ) throws
-	  Exception{
-	  
-	   model.addAttribute("login", loginVo);
-	   model.addAttribute("main", mainVo);
-	  
-	  return "recruit/recruitMain"; 
-	  
-	 }
+//	@RequestMapping(value = "/recruit/login", method = RequestMethod.GET)
+//	public String recruitLogin(Locale locale) throws Exception {
+//
+//		return "recruit/recruitLogin";
+//	}
+//
+//	@RequestMapping(value = "/recruit/login", method = RequestMethod.POST)
+//	public String recruitLoginPost(Locale locale, LoginVo loginVo, Model model) throws Exception {
+//
+//		model.addAttribute("login", loginVo);
+//
+//		return "redirect:/recruit/main";
+//	}
+//
+//	
+//	 @RequestMapping(value = "/recruit/main", method = RequestMethod.POST)
+//	 public String recruitMain(Locale locale, 
+//			 LoginVo loginVo,
+//			 MainVo mainVo,
+//			 Model model ) throws
+//	  Exception{
+//	  
+//	   model.addAttribute("login", loginVo);
+//	   model.addAttribute("main", mainVo);
+//	  
+//	  return "recruit/recruitMain"; 
+//	  
+//	 }
 	 
 
 }
