@@ -6,7 +6,7 @@ import com.spring.recruit.vo.RecruitVo;
 
 public interface RecruitDao {
 	
-	public int recruitLogin(RecruitVo recruitVo) throws Exception;
+	public RecruitVo recruitLogin(RecruitVo recruitVo) throws Exception;
 	
 	
 

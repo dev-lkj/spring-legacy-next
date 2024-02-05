@@ -44,8 +44,8 @@ import com.sun.org.glassfish.gmbal.ParameterNames;
 @Controller
 public class RecruitController {
 	
-	
-	RecruitService recruitService = new RecruitServiceImpl();
+	@Autowired
+	RecruitService recruitService;
 	
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -73,12 +73,12 @@ public class RecruitController {
 		
 		System.out.println(recruitService.recruitLogin(recruitVo));
 		
-		int loginvo = recruitService.recruitLogin(recruitVo);
+		RecruitVo loginvo = recruitService.recruitLogin(recruitVo);
 		System.out.println("::::"+loginvo);
 
-		if(loginvo == 1) { // 로그인 성공
+		if(loginvo != null) { // 로그인 성공
 			System.out.println("로그인 성공");
-			session.setAttribute("login", recruitVo);
+			session.setAttribute("login", loginvo);
 			returnURL = "redirect:/recruit/main";
 		} else {
 			System.out.println("로그인 실패");

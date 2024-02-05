@@ -3,7 +3,7 @@
 
 <mapper namespace="recruit">
    
-    <resultMap type="com.spring.recruit.vo.RecruitVo" id="RecruitVo">
+    <resultMap type="com.spring.recruit.vo.RecruitVo" id="recruitVo">
     	<result property="name" 	column="NAME"/>
     	<result property="birth" 	column="BIRTH"/>
     	<result property="gender" 	column="GENDER"/>
@@ -14,7 +14,7 @@
     	<result property="work_type" 	column="WORK_TYPE"/>
     </resultMap>
     
-    <select id="recruitLogin" parameterType="com.spring.recruit.vo.RecruitVo" resultMap="RecruitVo">
+    <select id="selectLogin" parameterType="com.spring.recruit.vo.RecruitVo" resultMap="recruitVo">
         SELECT 
 		  NAME
 		  ,BIRTH
