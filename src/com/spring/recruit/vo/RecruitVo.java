@@ -9,7 +9,8 @@ public class RecruitVo {
 	private String 	email;
 	private String 	addr;
 	private String	location;
-	private String	work_type;
+	private String	workType;
+	
 	
 	
 	public String getName() {
@@ -54,13 +55,15 @@ public class RecruitVo {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public String getWork_type() {
-		return work_type;
+	public String getWorkType() {
+		return workType;
 	}
-	public void setWork_type(String work_type) {
-		this.work_type = work_type;
+	public void setWorkType(String workType) {
+		this.workType = workType;
 	}
-
+	
+	
+	
 	
 	
 	

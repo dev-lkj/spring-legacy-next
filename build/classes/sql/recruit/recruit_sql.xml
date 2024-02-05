@@ -11,7 +11,7 @@
     	<result property="email" 	column="EMAIL"/>
     	<result property="addr" 	column="ADDR"/>
     	<result property="location" 	column="LOCATION"/>
-    	<result property="work_type" 	column="WORK_TYPE"/>
+    	<result property="workType" 	column="WORK_TYPE"/>
     </resultMap>
     
     <select id="selectLogin" parameterType="com.spring.recruit.vo.RecruitVo" resultMap="recruitVo">

@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +36,9 @@ import com.spring.board.HomeController;
 import com.spring.common.CommonUtil;
 import com.spring.recruit.service.RecruitService;
 import com.spring.recruit.service.impl.RecruitServiceImpl;
+import com.spring.recruit.vo.CareerVo;
+import com.spring.recruit.vo.CertificateVo;
+import com.spring.recruit.vo.EducationVo;
 import com.spring.recruit.vo.LoginVo;
 import com.spring.recruit.vo.MainVo;
 import com.spring.recruit.vo.PageVo;
@@ -60,21 +64,18 @@ public class RecruitController {
 	@RequestMapping(value = "/recruit/login", method = RequestMethod.POST)
 	public String recruitLoginPost(Locale locale, 
 				RecruitVo recruitVo, 
-				Model model,
+				Model model,				
 				HttpSession session
 			) throws Exception {
-		System.out.println(":::"+recruitVo.getName());
-		System.out.println(":::"+recruitVo.getPhone());
 		
 		String returnURL = "";
 		if(session.getAttribute("login") != null) {
 			session.removeAttribute("login");
 		}
 		
-		System.out.println(recruitService.recruitLogin(recruitVo));
 		
 		RecruitVo loginvo = recruitService.recruitLogin(recruitVo);
-		System.out.println("::::"+loginvo);
+
 
 		if(loginvo != null) { // 로그인 성공
 			System.out.println("로그인 성공");
@@ -92,12 +93,54 @@ public class RecruitController {
 	 @RequestMapping(value = "/recruit/main", method = RequestMethod.GET)
 	 public String recruitMain(Locale locale, 
 			 HttpSession session,
-			 RecruitVo recruitVo,
-			 Model model ) throws
-	  Exception{
+			 Model model ) throws Exception{
 		RecruitVo loginVo = (RecruitVo) session.getAttribute("login");
-	   model.addAttribute("login", loginVo);
-	   model.addAttribute("main", recruitVo);
+	   model.addAttribute("recruit", loginVo);
+	   
+	  return "recruit/recruitMain"; 
+	  
+	 }
+	 
+	 @RequestMapping(value = "/recruit/main", method = RequestMethod.POST)
+	 public String recruitMainPost(Locale locale, 
+			 HttpSession session,
+			 RecruitVo recruitVo,
+			 EducationVo educationVo,
+			 CareerVo careerVo,
+			 CertificateVo certificateVo,
+			 @RequestParam(value="recruitVo.location",required=false) String recruitLocation,
+			 @RequestParam(value="educationVo.startPeriod",required=false) String educationStartPeriod,
+			 @RequestParam(value="educationVo.endPeriod",required=false) String educationEndPeriod,
+			 @RequestParam(value="educationVo.location",required=false) String educationLocation,
+			 @RequestParam(value="careerVo.startPeriod",required=false) String careerStartPeriod,
+			 @RequestParam(value="careerVo.endPeriod",required=false) String careerEndPeriod,
+			 @RequestParam(value="careerVo.location",required=false) String careerLocation,
+			 	
+			 Model model ) throws Exception{
+		 	
+		 //Vo에 안담기는 파라미터 직접 담아주기
+		 recruitVo.setLocation(recruitLocation);
+		 educationVo.setStartPeriod(educationStartPeriod);
+		 educationVo.setEndPeriod(educationEndPeriod);
+		 educationVo.setLocation(educationLocation);
+		 careerVo.setStartPeriod(careerStartPeriod);
+		 careerVo.setEndPeriod(careerEndPeriod);
+		 careerVo.setLocation(careerLocation);
+		 	
+		 System.out.println("::recruitVo "+recruitVo.getName());
+		 System.out.println("::recruitVo2 "+recruitVo.getBirth());
+		 
+		 System.out.println("::educationVo "+educationVo.getGrade());
+		 System.out.println("::educationVo "+educationVo.getStartPeriod());
+		 System.out.println("::careerVo "+careerVo.getTask());
+		 System.out.println("::careerVo "+careerVo.getStartPeriod());
+		 System.out.println("::certificateVo "+certificateVo.getOrganizeName());
+		
+		 
+		 model.addAttribute("recruit", recruitVo);
+		 model.addAttribute("education", educationVo);
+		 model.addAttribute("career", careerVo);
+		 model.addAttribute("certificate", certificateVo);
 	  
 	  return "recruit/recruitMain"; 
 	  
@@ -105,3 +148,4 @@ public class RecruitController {
 	 
 
 }
+
