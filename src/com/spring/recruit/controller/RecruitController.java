@@ -2,6 +2,9 @@ package com.spring.recruit.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -135,8 +138,7 @@ public class RecruitController {
 		 System.out.println("::careerVo "+careerVo.getTask());
 		 System.out.println("::careerVo "+careerVo.getStartPeriod());
 		 System.out.println("::certificateVo "+certificateVo.getOrganizeName());
-		
-		 
+				 
 		 model.addAttribute("recruit", recruitVo);
 		 model.addAttribute("education", educationVo);
 		 model.addAttribute("career", careerVo);
@@ -146,6 +148,150 @@ public class RecruitController {
 	  
 	 }
 	 
+	 @RequestMapping(value = "/recruit/main/save", method = RequestMethod.POST)
+	 public String recruitMainSave(Locale locale, 
+			 HttpSession session,
+			 RecruitVo recruitVo,
+			 EducationVo educationVo,
+			 CareerVo careerVo,
+			 CertificateVo certificateVo,
+			 @RequestParam(value="recruitVo.location",required=false) String recruitLocation,
+			 @RequestParam(value="educationVo.startPeriod",required=false) String educationStartPeriod,
+			 @RequestParam(value="educationVo.endPeriod",required=false) String educationEndPeriod,
+			 @RequestParam(value="educationVo.location",required=false) String educationLocation,
+			 @RequestParam(value="careerVo.startPeriod",required=false) String careerStartPeriod,
+			 @RequestParam(value="careerVo.endPeriod",required=false) String careerEndPeriod,
+			 @RequestParam(value="careerVo.location",required=false) String careerLocation,
+			 	
+			 Model model ) throws Exception{
+		 	
+		 //Vo에 안담기는 파라미터 직접 담아주기
+		 recruitVo.setLocation(recruitLocation);
+		 educationVo.setStartPeriod(educationStartPeriod);
+		 educationVo.setEndPeriod(educationEndPeriod);
+		 educationVo.setLocation(educationLocation);
+		 careerVo.setStartPeriod(careerStartPeriod);
+		 careerVo.setEndPeriod(careerEndPeriod);
+		 careerVo.setLocation(careerLocation);
+		 	
+		 System.out.println("::recruitVo "+recruitVo.getName());
+		 System.out.println("::recruitVo2 "+recruitVo.getBirth());
+		 
+		 System.out.println("::educationVo "+educationVo.getGrade());
+		 System.out.println("::educationVo "+educationVo.getStartPeriod());
+		 System.out.println("::careerVo "+careerVo.getTask());
+		 System.out.println("::careerVo "+careerVo.getStartPeriod());
+		 System.out.println("::certificateVo "+certificateVo.getOrganizeName());
+				 
+		 int educationYear = calculateYears(educationVo.getStartPeriod(),educationVo.getEndPeriod());
+		 int careerYear = calculateYears(careerVo.getStartPeriod(), careerVo.getEndPeriod());		 
+		 int careerRemainingMonths =calculateRemainingMonths(careerVo.getStartPeriod(), careerVo.getEndPeriod());
+		 
+		 
+		 model.addAttribute("recruit", recruitVo);
+		 model.addAttribute("education", educationVo);
+		 
+		 model.addAttribute("educationYear", educationYear);
+		 model.addAttribute("careerYear", careerYear);
+		 model.addAttribute("careerRemainingMonths", careerRemainingMonths);
+		 
+		 model.addAttribute("career", careerVo);
+		 model.addAttribute("certificate", certificateVo);
+	  
+	  return "recruit/recruitMainSave"; 
+	  
+	 }
+	 
+	 @RequestMapping(value = "/recruit/main/submit", method = RequestMethod.POST)
+	 public String recruitMainSubmit(Locale locale, 
+			 HttpSession session,
+			 RecruitVo recruitVo,
+			 EducationVo educationVo,
+			 CareerVo careerVo,
+			 CertificateVo certificateVo,
+			 @RequestParam(value="recruitVo.location",required=false) String recruitLocation,
+			 @RequestParam(value="educationVo.startPeriod",required=false) String educationStartPeriod,
+			 @RequestParam(value="educationVo.endPeriod",required=false) String educationEndPeriod,
+			 @RequestParam(value="educationVo.location",required=false) String educationLocation,
+			 @RequestParam(value="careerVo.startPeriod",required=false) String careerStartPeriod,
+			 @RequestParam(value="careerVo.endPeriod",required=false) String careerEndPeriod,
+			 @RequestParam(value="careerVo.location",required=false) String careerLocation,
+			 	
+			 Model model ) throws Exception{
+		 	
+		 //Vo에 안담기는 파라미터 직접 담아주기
+		 recruitVo.setLocation(recruitLocation);
+		 educationVo.setStartPeriod(educationStartPeriod);
+		 educationVo.setEndPeriod(educationEndPeriod);
+		 educationVo.setLocation(educationLocation);
+		 careerVo.setStartPeriod(careerStartPeriod);
+		 careerVo.setEndPeriod(careerEndPeriod);
+		 careerVo.setLocation(careerLocation);
+		 	
+		 System.out.println("::recruitVo "+recruitVo.getName());
+		 System.out.println("::recruitVo2 "+recruitVo.getBirth());
+		 
+		 System.out.println("::educationVo "+educationVo.getGrade());
+		 System.out.println("::educationVo "+educationVo.getStartPeriod());
+		 System.out.println("::careerVo "+careerVo.getTask());
+		 System.out.println("::careerVo "+careerVo.getStartPeriod());
+		 System.out.println("::certificateVo "+certificateVo.getOrganizeName());
+		
+		 int educationYear = calculateYears(educationVo.getStartPeriod(),educationVo.getEndPeriod());
+		 int careerYear = calculateYears(careerVo.getStartPeriod(), careerVo.getEndPeriod());		 
+		 int careerRemainingMonths =calculateRemainingMonths(careerVo.getStartPeriod(), careerVo.getEndPeriod());
+		 
+		 
+		 model.addAttribute("recruit", recruitVo);
+		 model.addAttribute("education", educationVo);
+		 
+		 model.addAttribute("educationYear", educationYear);
+		 model.addAttribute("careerYear", careerYear);
+		 model.addAttribute("careerRemainingMonths", careerRemainingMonths);
+		 
+		 model.addAttribute("career", careerVo);
+		 model.addAttribute("certificate", certificateVo);
+		 
+		 
+	  
+	  return "recruit/recruitMainSubmit"; 
+	  
+	 }
+	 
+	 public static int calculateYears(String startDateStr, String endDateStr) {
+		 	// 날짜 형식 지정
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
+	        
+	        // 입력된 날짜 문자열을 LocalDate 객체로 변환
+		 
+	        LocalDate startDate = LocalDate.parse(startDateStr,formatter);
+	        LocalDate endDate = LocalDate.parse(endDateStr, formatter);
+
+	        // 날짜 간의 차이 계산
+	        Period period = Period.between(startDate, endDate);
+
+	        // 차이에서 년수 반환
+	        return period.getYears();
+	    }
+	 
+	 public static int calculateRemainingMonths(String startDateStr, String endDateStr) {
+		 	// 날짜 형식 지정
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy.MM.dd");
+	        
+	        // 입력된 날짜 문자열을 LocalDate 객체로 변환
+	        LocalDate startDate = LocalDate.parse(startDateStr, formatter);
+	        LocalDate endDate = LocalDate.parse(endDateStr, formatter);
+
+	        // 날짜 간의 차이 계산
+	        Period period = Period.between(startDate, endDate);
+
+	        // 년수를 제외한 나머지 개월수 반환
+	        int remainingMonths = period.getMonths();
+
+	        return remainingMonths;
+	    }
+	 
+
 
 }
 

@@ -9,7 +9,34 @@
 </head>
 <script type="text/javascript">
 	$j(document).ready(function() {
-	
+		$j("#education").on("click", function() {
+			/* var inputs = $j("#education").closest("tr").find("input:text");
+			var inputJson = inputs.serialize();
+			alert(inputJson);
+			// Loop through each input element and print its name
+			inputs.each(function() {
+			    alert($j(this).prop("name"));
+			    alert();
+			}); */
+
+			var inputs = $("#education").closest("tr").find("input:text");
+			var inputArray = [];
+
+			// Loop through each input element and push its value to the array
+			inputs.each(function() {
+				inputArray.push({
+					name : $(this).prop("name"),
+					value : $(this).val()
+				});
+			});
+
+			// Convert the array to JSON
+			var inputJson = JSON.stringify(inputArray);
+			alert(inputJson);
+
+		});
+		
+		
 		$j("#educationAdd").on("click", function() {
 			 var newRow = $j("#educationTable .educationRow:first").clone();
 			// 클론된 행에서 input과 select 요소를 찾아서 값을 초기화
@@ -70,14 +97,14 @@
 		});
 		
 		$j("#saveButton").on("click",function(){
-			$j("#myform").attr("action","/recruit/main/save");
+			$j("#myform").action = "/recruit/main/save";
 			$j("#myform").submit();
 			alert("save");
 				
 		});
 		
 		$j("#submitButton").on("click",function(){
-			$j("#myform").attr("action","/recruit/main/submit");
+			$j("#myform").action = "/recruit/main/submit";
 			$j("#myform").submit();
 			alert("submit");
 		});
@@ -92,18 +119,16 @@
 					<table align="center" border="2">
 						<tr align="center" style="font-weight: bold;">
 							<td width="100"><label for="name">이름</label></td>
-							<td align="left">
-								<input id="name" type="text" name="name" value="${recruit.name}" />
-							</td>
+							<td align="left"><input id="name" type="text" name="name"
+								value="${recruit.name}" /></td>
 							<td><label for="birth">생년월일</label></td>
-							<td align="left">
-								<input id="birth" type="text" name="birth" value="${recruit.birth}" />
-							</td>
+							<td align="left"><input id="birth" type="text" name="birth"
+								value="${recruit.birth}" /></td>
 						</tr>
 						<tr align="center" style="font-weight: bold;">
 							<td><label for="gender">성별</label></td>
 							<td align="left">
-								<select	name="gender">
+								<select	name="gender" value="${recruit.gender}">
 									<option selected value="남자">남자</option>
 									<option value="여자">여자</option>
 								</select>
@@ -113,32 +138,26 @@
 								value="${recruit.phone}" /></td>
 						</tr>
 						<tr align="center" style="font-weight: bold;">
-							<td>
-								<label for="email">이메일</label>
-							</td>
-							<td align="left">
-								<input id="email" type="text" name="email" value="${recruit.email}" />
-							</td>
-							<td>
-								<label for="addr">주소</label>
-							</td>
-							<td>
-								<input id="addr" type="text" name="addr" value="${recruit.addr}" />
-							</td>
+							<td><label for="email">이메일</label></td>
+							<td align="left"><input id="email" type="text" name="email"
+								value="${recruit.email}" /></td>
+							<td><label for="addr">주소</label></td>
+							<td><input id="addr" type="text" name="addr"
+								value="${recruit.addr}" /></td>
 						</tr>
 						<tr align="center" style="font-weight: bold;">
 							<td><label for="location">희망근무지</label></td>
 							<td align="left">
-								<select name="recruitVo.location">
-									<option value="서울">서울</option>
+								<select name="recruitVo.location" value="${recruit.location}">
+									<option selected value="서울">서울</option>
 									<option value="경기">경기</option>
 									<option value="인천">인천</option>
 								</select>
 							</td>
 							<td><label for="workType">근무형태</label></td>
 							<td align="left">
-								<select name="workType">
-									<option value="정규직">정규직</option>
+								<select name="workType" value="${recruit.workType}">
+									<option selected value="정규직">정규직</option>
 									<option value="계약직">계약직</option>
 								</select>
 							</td>
@@ -150,6 +169,30 @@
 			<tr style="border: none;">
 				<td style="border: none;"><br /></td>
 			</tr>
+			<c:choose>
+   			 <c:when test="${not empty sessionScope.login}">
+			
+			<tr>
+				<td style="border: none;">
+					<table width="900" align="center" border="2">
+						<tr>
+							<td align="center" style="font-weight: bold;">학력사항</td>
+							<td align="center" style="font-weight: bold;">경력사항</td>
+							<td align="center" style="font-weight: bold;">희망연봉</td>
+							<td align="center" style="font-weight: bold;">희망근무지/근무형태</td>
+						</tr>
+						<tr>
+							<td>대학교(${educationYear}년) ${education.division}</td>
+							<td>경력 ${careerYear}년 ${careerRemainingMonths}개월</td>
+							<td>회사내규에 따름</td>
+							<td>${recruit.location}전체<br /> ${recruit.workType}
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			</c:when>
+			</c:choose>
 
 			<tr style="border: none;">
 				<td style="border: none;"><br />
@@ -226,7 +269,7 @@
 										<input type="text" name="educationVo.endPeriod"	value="${education.endPeriod}" />
 									</td>
 									<td>
-										<select name="division">
+										<select name="division"	value="${education.division}">
 											<option value="졸업">졸업</option>
 											<option value="재학">재학</option>
 											<option value="중퇴">중퇴</option>
@@ -234,7 +277,7 @@
 									</td>
 									<td>
 										<input type="text" name="schoolName" value="${education.schoolName}" /> 
-										<select	name="educationVo.location">
+										<select	name="educationVo.location" value="${education.location}">
 											<option value="서울">서울</option>
 											<option value="경기">경기</option>
 											<option value="강원">강원</option>
