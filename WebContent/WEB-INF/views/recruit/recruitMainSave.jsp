@@ -177,8 +177,8 @@
 			
 		});
 		
-		$j("#saveButton").on("click",function(){
-			$j("#myform").action = "/recruit/main/update";
+		/* $j("#saveButton").on("click",function(){
+			$j("#myform").action = "/recruit/main/";
 			$j("#myform").submit();
 			alert("save");
 				
@@ -186,6 +186,19 @@
 		
 		$j("#submitButton").on("click",function(){
 			$j("#myform").action = "/recruit/main/submit";
+			$j("#myform").submit();
+			alert("submit");
+		}); */
+		
+		$j("#saveButton").on("click",function(){
+		 	$j("#myform").attr("action","/recruit/main/update");
+			$j("#myform").submit();
+ 			alert("save");
+				
+		});
+		
+		$j("#submitButton").on("click",function(){
+			$j("#myform").attr("action","/recruit/main/submit");
 			$j("#myform").submit();
 			alert("submit");
 		});
@@ -443,8 +456,8 @@
 								<tr class="careerRow">
 									<td><input type="checkbox" class="careerCheckbox"/></td>
 									<td>
-										<input type="text" name="careerVo.startPeriod" value="${career.startPeriod}" class="dateInput careerEndDate" />~<br />
-									    <input type="text" name="careerVo.endPeriod" value="${career.endPeriod}" class="dateInput careerEndDate"/>
+										<input type="text" name="careerVo.startPeriod" value="${career.startPeriod}" required class="dateInput careerStartDate" />~<br />
+									    <input type="text" name="careerVo.endPeriod" value="${career.endPeriod}" required class="dateInput careerEndDate"/>
 									</td>
 									<td>
 										<input type="text" name="compName" value="${career.compName}" placeholder="ex) ³×ÀÌ¹ö" />

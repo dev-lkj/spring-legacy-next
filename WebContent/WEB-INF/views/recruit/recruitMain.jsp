@@ -240,9 +240,9 @@
 							</td>
 						</tr>
 						<tr align="center" style="font-weight: bold;">
-							<td><label for="location">희망근무지</label></td>
+							<td><label for="recruitLocation">희망근무지</label></td>
 							<td align="left">
-								<select name="recruitVo.location" required>
+								<select id="recruitLocation" name="recruitVo.location" required >
 									<option value="서울">서울</option>
 									<option value="경기">경기</option>
 									<option value="인천">인천</option>
@@ -250,7 +250,7 @@
 							</td>
 							<td><label for="workType">근무형태</label></td>
 							<td align="left">
-								<select name="workType" required>
+								<select id="workType" name="workType" required>
 									<option value="정규직">정규직</option>
 									<option value="계약직">계약직</option>
 								</select>
@@ -448,8 +448,8 @@
 								<tr class="careerRow">
 									<td><input type="checkbox" class="careerCheckbox"/></td>
 									<td>
-										<input type="text" name="careerVo.startPeriod" value="${career.startPeriod}" class="dateInput careerStartDate" placeholder="ex) yy.MM.dd" />~<br />
-									    <input type="text" name="careerVo.endPeriod" value="${career.endPeriod}" class="dateInput careerEndDate" placeholder="ex) yy.MM.dd"/>
+										<input type="text" name="careerVo.startPeriod" value="${career.startPeriod}" required class="dateInput careerStartDate" placeholder="ex) yy.MM.dd" />~<br />
+									    <input type="text" name="careerVo.endPeriod" value="${career.endPeriod}" required class="dateInput careerEndDate" placeholder="ex) yy.MM.dd"/>
 									</td>
 									<td>
 										<input type="text" name="compName" value="${career.compName}" placeholder="ex) 네이버"/>
