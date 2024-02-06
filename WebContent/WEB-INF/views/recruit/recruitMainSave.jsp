@@ -9,6 +9,108 @@
 </head>
 <script type="text/javascript">
 	$j(document).ready(function() {
+		
+		// 날짜 입력 필드에 대한 유효성 검사를 수행합니다.
+	    $j(".dateInput").on("input", function() {
+	        var input = $j(this).val();
+
+	        // 입력 값이 숫자인지 확인합니다.
+	        if (!/^\d*$/.test(input)) {
+	            alert("숫자만 입력하세요.");
+	            // 현재 입력 값을 비웁니다.
+	            $j(this).val("");
+	            return;
+	        }
+
+	        // 입력 값이 6자리 이상인지 확인합니다.
+	        if (input.length >= 6) {
+	            // 6자리 이상일 경우 yy.MM.dd 형식으로 변환합니다.
+	            var formattedDate = input.replace(/^(\d{2})(\d{2})(\d{2})$/, "$1.$2.$3");
+	            // 변환된 값을 입력 필드에 설정합니다.
+	            $j(this).val(formattedDate);
+	        }
+	    });
+		
+	    $j(".phone").on("input", function() {
+	        var input = $j(this).val();
+
+	        // 입력 값이 숫자가 아닌 경우 또는 숫자가 11자리를 초과하는 경우
+	        if (!/^\d+$/.test(input) || input.length > 11) {
+	            alert("올바른 전화번호 형식이 아닙니다. 숫자로만 입력해주세요.");
+	            $j(this).val(""); // 입력 필드 초기화
+	            return;
+	        }
+
+	        // 입력 값에서 숫자만 추출합니다.
+	        var digits = input.replace(/\D/g, "");
+
+	        // 숫자만 추출한 결과가 11자리 이상인 경우에만 처리합니다.
+	        if (digits.length >= 11) {
+	            // 전화번호 형식에 맞게 변환합니다.
+	            var formattedNumber;
+	            if (digits.length === 11) {
+	                formattedNumber = digits.replace(/(\d{3})(\d{4})(\d{4})/, "0$1-$2-$3");
+	            } else {
+	                formattedNumber = digits.replace(/(\d{2,3})(\d{3,4})(\d{4})/, "0$1-$2-$3");
+	            }
+	            // 변환된 값을 입력 필드에 설정합니다.
+	            $j(this).val(formattedNumber);
+	        }
+	    });
+	    
+	    $j(".educationStartDate, .educationEndDate").on("keyup", function() {
+	        var startDateInput = $j(".educationStartDate").val();
+	        var endDateInput = $j(".educationEndDate").val();
+
+	        // 시작일과 종료일이 둘 다 입력된 경우에만 검증합니다.
+	        if (startDateInput && endDateInput) {
+	            // yy.MM.dd 형식을 yyyy-MM-dd 형식으로 변환
+	            var startDateArray = startDateInput.split(".");
+	            var endDateArray = endDateInput.split(".");
+	            var startDate = "20" + startDateArray[0] + "-" + startDateArray[1] + "-" + startDateArray[2];
+	            var endDate = "20" + endDateArray[0] + "-" + endDateArray[1] + "-" + endDateArray[2];
+
+	            // 시작일과 종료일을 Date 객체로 변환
+	            startDate = new Date(startDate);
+	            endDate = new Date(endDate);
+
+	            // 시작일이 종료일보다 늦은 경우 경고 메시지를 표시합니다.
+	            if (startDate > endDate) {
+	                alert("시작일은 종료일보다 늦을 수 없습니다.");
+	                // 입력 필드 초기화 혹은 수정
+	                $j(".educationStartDate").val("");
+	                $j(".educationEndDate").val("");
+	            }
+	        }
+	    });
+	    
+	    $j(".careerStartDate, .careerEndDate").on("keyup", function() {
+	        var startDateInput = $j(".careerStartDate").val();
+	        var endDateInput = $j(".careerEndDate").val();
+
+	        // 시작일과 종료일이 둘 다 입력된 경우에만 검증합니다.
+	        if (startDateInput && endDateInput) {
+	            // yy.MM.dd 형식을 yyyy-MM-dd 형식으로 변환
+	            var startDateArray = startDateInput.split(".");
+	            var endDateArray = endDateInput.split(".");
+	            var startDate = "20" + startDateArray[0] + "-" + startDateArray[1] + "-" + startDateArray[2];
+	            var endDate = "20" + endDateArray[0] + "-" + endDateArray[1] + "-" + endDateArray[2];
+
+	            // 시작일과 종료일을 Date 객체로 변환
+	            startDate = new Date(startDate);
+	            endDate = new Date(endDate);
+
+	            // 시작일이 종료일보다 늦은 경우 경고 메시지를 표시합니다.
+	            if (startDate > endDate) {
+	                alert("시작일은 종료일보다 늦을 수 없습니다.");
+	                // 입력 필드 초기화 혹은 수정
+	                $j(".careerStartDate").val("");
+	                $j(".careerEndDate").val("");
+	            }
+	        }
+	    });
+		
+
 		$j("select[name=gender]").val("${recruit.gender}").prop("selected",true);
 		$j("select[name=recruitVo.location]").val("${recruit.location}").prop("selected",true);
 		$j("select[name=workType]").val("${recruit.workType}").prop("selected",true);
@@ -76,7 +178,7 @@
 		});
 		
 		$j("#saveButton").on("click",function(){
-			$j("#myform").action = "/recruit/main/save";
+			$j("#myform").action = "/recruit/main/update";
 			$j("#myform").submit();
 			alert("save");
 				
@@ -97,46 +199,59 @@
 				<td align="center" style="border: none;">
 					<table align="center" border="2">
 						<tr align="center" style="font-weight: bold;">
-							<td width="100"><label for="name">이름</label></td>
-							<td align="left"><input id="name" type="text" name="name"
-								value="${recruit.name}" /></td>
-							<td><label for="birth">생년월일</label></td>
-							<td align="left"><input id="birth" type="text" name="birth"
-								value="${recruit.birth}" /></td>
+							<td width="100">
+								<label for="name">이름</label>
+							</td>
+							<td align="left">
+								<input id="name" type="text" name="name" value="${recruit.name}" class="required" required placeholder="ex) test"/>
+							</td>
+							<td>
+								<label for="birth">생년월일</label>
+							</td>
+							<td align="left">
+								<input id="birth" type="text" name="birth" value="${recruit.birth}" required class="dateInput" placeholder="ex) yy.MM.dd"/>
+							</td>
 						</tr>
 						<tr align="center" style="font-weight: bold;">
-							<td><label for="gender">성별</label></td>
+							<td>
+								<label for="gender">성별</label>
+							</td>
 							<td align="left">
-								<select	name="gender" value="${recruit.gender}">
-									<option selected value="남자">남자</option>
+								<select	name="gender" value="${recruit.gender}" required >
+									<option value="남자">남자</option>
 									<option value="여자">여자</option>
 								</select>
 							</td>
-							<td><label for="phone">연락처</label></td>
-							<td><input id="phone" type="text" name="phone"
-								value="${recruit.phone}" /></td>
+							<td>
+								<label for="phone">연락처</label>
+							</td>
+							<td>
+								<input id="phone" type="text" name="phone" value="${recruit.phone}" class="phone" required placeholder="ex) 010-1234-4567" />
+							</td>
 						</tr>
 						<tr align="center" style="font-weight: bold;">
 							<td><label for="email">이메일</label></td>
-							<td align="left"><input id="email" type="text" name="email"
-								value="${recruit.email}" /></td>
+							<td align="left">
+								<input id="email" type="text" name="email" value="${recruit.email}" required placeholder="ex) abc@abc.com" />
+							</td>
 							<td><label for="addr">주소</label></td>
-							<td><input id="addr" type="text" name="addr"
-								value="${recruit.addr}" /></td>
+							<td>
+								<input id="addr" type="text" name="addr" value="${recruit.addr}" required placeholder="ex) 서울시 강남구" />
+							</td>
 						</tr>
 						<tr align="center" style="font-weight: bold;">
 							<td><label for="location">희망근무지</label></td>
 							<td align="left">
-								<select name="recruitVo.location" value="${recruit.location}">
-									<option selected value="서울">서울</option>
+								<select name="recruitVo.location"  required>
+									<option value="서울">서울</option>
 									<option value="경기">경기</option>
 									<option value="인천">인천</option>
 								</select>
 							</td>
 							<td><label for="workType">근무형태</label></td>
 							<td align="left">
-								<select name="workType" value="${recruit.workType}">
-									<option selected value="정규직">정규직</option>
+								<select name="workType" required>
+									<option value="정규직">정규직</option>
 									<option value="계약직">계약직</option>
 								</select>
 							</td>
@@ -149,7 +264,7 @@
 				<td style="border: none;"><br /></td>
 			</tr>
 			<c:choose>
-   			 <c:when test="${not empty sessionScope.login}">
+   			 <c:when test="${not empty education}">
 			
 			<tr>
 				<td style="border: none;">
@@ -164,8 +279,7 @@
 							<td>대학교(${educationYear}년) ${education.division}</td>
 							<td>경력 ${careerYear}년 ${careerRemainingMonths}개월</td>
 							<td>회사내규에 따름</td>
-							<td>${recruit.location}전체<br /> ${recruit.workType}
-							</td>
+							<td>${recruit.location}전체<br /> ${recruit.workType}	</td>
 						</tr>
 					</table>
 				</td>
@@ -243,20 +357,20 @@
 										<input type="checkbox" class="educationCheckbox"/>
 									</td>
 									<td>
-										<input type="text" name="educationVo.startPeriod" value="${education.startPeriod}" /><br /> 
+										<input type="text" name="educationVo.startPeriod" value="${education.startPeriod}" class="dateInput educationStartDate" required placeholder="ex) yy.MM.dd" /><br /> 
 										~<br /> 
-										<input type="text" name="educationVo.endPeriod"	value="${education.endPeriod}" />
+										<input type="text" name="educationVo.endPeriod"	value="${education.endPeriod}" class="dateInput educationEndDate" required placeholder="ex) yy.MM.dd" />
 									</td>
 									<td>
-										<select name="division"	value="${education.division}">
+										<select name="division"	required >
 											<option value="졸업">졸업</option>
 											<option value="재학">재학</option>
 											<option value="중퇴">중퇴</option>
 										</select>
 									</td>
 									<td>
-										<input type="text" name="schoolName" value="${education.schoolName}" /> 
-										<select	name="educationVo.location" value="${education.location}">
+										<input type="text" name="schoolName" value="${education.schoolName}" required placeholder="OO대학교"/> 
+										<select	name="educationVo.location" value="${education.location}" required>
 											<option value="서울">서울</option>
 											<option value="경기">경기</option>
 											<option value="강원">강원</option>
@@ -266,10 +380,10 @@
 										</select>
 									</td>
 									<td>
-										<input type="text" name="major" value="${education.major}" />
+										<input type="text" name="major" value="${education.major}" required placeholder="ex) 기계공학" />
 									</td>
 									<td>
-										<input type="text" name="grade" value="${education.grade}" />
+										<input type="text" name="grade" value="${education.grade}" required placeholder="ex) 3.5"/>
 									</td>
 								</tr>
 <%-- 						</c:otherwise> --%>
@@ -329,17 +443,17 @@
 								<tr class="careerRow">
 									<td><input type="checkbox" class="careerCheckbox"/></td>
 									<td>
-										<input type="text" name="careerVo.startPeriod" value="${career.startPeriod}" />~<br />
-									    <input type="text" name="careerVo.endPeriod" value="${career.endPeriod}" />
+										<input type="text" name="careerVo.startPeriod" value="${career.startPeriod}" class="dateInput careerEndDate" />~<br />
+									    <input type="text" name="careerVo.endPeriod" value="${career.endPeriod}" class="dateInput careerEndDate"/>
 									</td>
 									<td>
-										<input type="text" name="compName" value="${career.compName}" />
+										<input type="text" name="compName" value="${career.compName}" placeholder="ex) 네이버" />
 									</td>
 									<td>
-										<input type="text" name="task" value="${career.task}" />
+										<input type="text" name="task" value="${career.task}" placeholder="ex) 사원" />
 									</td>
 									<td>
-										<input type="text" name="careerVo.location" value="${career.location}" />
+										<input type="text" name="careerVo.location" value="${career.location}" placeholder="ex) 서울시 강남구" />
 									</td>
 								</tr>
 <%-- 							</c:otherwise> --%>
@@ -392,13 +506,13 @@
 							<tr class="certificateRow">
 								<td><input type="checkbox" class="certificateCheckbox" /></td>
 								<td>
-									<input type="text" name="qualifiName" value="${certificate.qualifiName}" />
+									<input type="text" name="qualifiName" value="${certificate.qualifiName}" placeholder="ex) 정보처리기사" />
 								</td>
 								<td>
-									<input type="text" name="acquDate" value="${certificate.acquDate}" />
+									<input type="text" name="acquDate" value="${certificate.acquDate}" class="dateInput" placeholder="ex) yy.MM.dd" />
 								</td>
 								<td>
-									<input type="text" name="organizeName" value="${certificate.organizeName}" />
+									<input type="text" name="organizeName" value="${certificate.organizeName}" placeholder="한국산업인력공단" />
 								</td>
 							</tr>
 <%-- 						</c:otherwise> --%>

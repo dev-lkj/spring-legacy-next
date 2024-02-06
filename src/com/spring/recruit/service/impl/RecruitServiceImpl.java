@@ -64,9 +64,25 @@ public class RecruitServiceImpl implements RecruitService{
 	}
 	
 	@Override
-	public int recruitInsert(RecruitVo recruitVo) throws Exception{
-		return recruitDao.recruitInsert(recruitVo);
+	public int recruitUpdate(RecruitVo recruitVo) throws Exception{
+		return recruitDao.recruitUpdate(recruitVo);
 	}
+	
+	@Override
+	public int educationUpdate(EducationVo educationVo) throws Exception{
+		return recruitDao.educationUpdate(educationVo);
+	}
+	
+	@Override
+	public int careerUpdate(CareerVo careerVo) throws Exception{
+		return recruitDao.careerUpdate(careerVo);
+	}
+	
+	@Override
+	public int certificateUpdate(CertificateVo certificateVo) throws Exception{
+		return recruitDao.certificateUpdate(certificateVo);
+	}
+	
 
 	@Override
 	public int educationInsert(EducationVo educationVo, RecruitVo recruitVo) throws Exception {

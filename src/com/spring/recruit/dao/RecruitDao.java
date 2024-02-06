@@ -23,10 +23,17 @@ public interface RecruitDao {
 	
 	public int recruitSubmit(RecruitVo recruitVo) throws Exception;
 	
-
+  
 	public int recruitJoin(RecruitVo recruitVo) throws Exception;
 		
-	public int recruitInsert(RecruitVo recruitVo) throws Exception;
+	public int recruitUpdate(RecruitVo recruitVo) throws Exception;
+	
+	public int educationUpdate(EducationVo educationVo) throws Exception;
+	
+	public int careerUpdate(CareerVo careerVo) throws Exception;
+	
+	public int certificateUpdate(CertificateVo certificateVo) throws Exception;
+	
 	
 	
 	public int educationInsert(EducationVo educationVo,RecruitVo recruitVo) throws Exception;

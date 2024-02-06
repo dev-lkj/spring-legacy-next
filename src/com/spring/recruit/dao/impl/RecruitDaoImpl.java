@@ -82,10 +82,26 @@ public class RecruitDaoImpl implements RecruitDao{
 	}
 	
 	@Override
-	public int recruitInsert(RecruitVo recruitVo) throws Exception {
+	public int recruitUpdate(RecruitVo recruitVo) throws Exception {
 		System.out.println("recruitJoinDaoImpl");
-		return sqlSession.update("recruit.recruitInsert", recruitVo);
+		return sqlSession.update("recruit.recruitUpdate", recruitVo);
 	}
+	
+	@Override
+	public int educationUpdate(EducationVo educationVo) throws Exception{
+		return sqlSession.update("recruit.educationUpdate", educationVo);
+	}
+	
+	@Override
+	public int careerUpdate(CareerVo careerVo) throws Exception{
+		return sqlSession.update("recruit.careerUpdate", careerVo);
+	}
+	
+	@Override
+	public int certificateUpdate(CertificateVo certificateVo) throws Exception {
+		return sqlSession.update("recruit.certificateUpdate", certificateVo);
+	}
+	
 
 
 

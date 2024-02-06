@@ -83,7 +83,7 @@
 				<td style="border: none;"><br /></td>
 			</tr>
 			<c:choose>
-   			 <c:when test="${not empty sessionScope.login}">
+   			 <c:when test="${not empty education}">
 			<tr>
 				<td style="border: none;">
 					<table width="900" align="center" border="2">

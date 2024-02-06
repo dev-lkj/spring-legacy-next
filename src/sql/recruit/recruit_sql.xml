@@ -143,20 +143,7 @@
         )
     </insert>
     
-    <update id="recruitInsert" parameterType="com.spring.recruit.vo.RecruitVo">
-        UPDATE
-        RECRUIT
-        SET
-        NAME = #{name}
-        ,BIRTH = #{birth}
-        ,GENDER = #{gender}
-        ,PHONE = #{phone}
-        ,EMAIL = #{email}
-        ,ADDR = #{addr}
-        ,LOCATION = #{location}
-        ,WORK_TYPE = #{workType}
-       	WHERE NAME = #{name} AND PHONE = #{phone}
-    </update>
+    
     
     <update id="recruitSave" parameterType="com.spring.recruit.vo.RecruitVo">
         UPDATE
@@ -168,10 +155,62 @@
     
     <update id="recruitSubmit" parameterType="com.spring.recruit.vo.RecruitVo">
         UPDATE
-        RECRUIT
+         RECRUIT
         SET
-        SUBMIT = 2
+         SUBMIT = 2
        	WHERE NAME = #{name} AND PHONE = #{phone}
+    </update>
+    
+    <update id="recruitUpdate" parameterType="com.spring.recruit.vo.RecruitVo">
+        UPDATE
+          RECRUIT
+        SET
+          NAME = #{name}
+          ,BIRTH = #{birth}
+          ,GENDER = #{gender}
+          ,PHONE = #{phone}
+          ,EMAIL = #{email}
+          ,ADDR = #{addr}
+          ,LOCATION = #{location}
+          ,WORK_TYPE = #{workType}
+       	WHERE 
+       	  NAME = #{name} AND PHONE = #{phone}
+    </update>
+    
+    <update id="educationUpdate" parameterType="com.spring.recruit.vo.EducationVo">
+        UPDATE
+         EDUCATION
+        SET
+          SCHOOL_NAME = #{schoolName}
+         ,DIVISION = #{division}
+         ,START_PERIOD = #{startPeriod}
+         ,END_PERIOD = #{endPeriod}
+         ,MAJOR = #{major}
+         ,GRADE = #{grade}
+         ,LOCATION = #{location}
+        WHERE SEQ = #{seq}
+    </update>
+    
+    <update id="careerUpdate" parameterType="com.spring.recruit.vo.CareerVo">
+        UPDATE
+         CAREER
+        SET
+         COMP_NAME = #{compName}
+         ,LOCATION = #{location}
+         ,START_PERIOD = #{startPeriod}
+         ,END_PERIOD = #{endPeriod}
+         ,TASK = #{task}
+        WHERE SEQ = #{seq}
+    </update>
+    
+    <update id="certificateUpdate" parameterType="com.spring.recruit.vo.CertificateVo">
+        UPDATE
+         CERTIFICATE
+        SET
+         QUALIFI_NAME = #{qualfiName}
+         ,ACQU_DATE = #{acquDate}
+         ,ORGANIZE_NAME = #{organizeName}
+        WHERE SEQ = #{seq}
     </update>
     
     
