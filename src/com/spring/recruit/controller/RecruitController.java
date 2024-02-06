@@ -37,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.board.HomeController;
 import com.spring.common.CommonUtil;
+import com.spring.recruit.dao.RecruitDao;
 import com.spring.recruit.service.RecruitService;
 import com.spring.recruit.service.impl.RecruitServiceImpl;
 import com.spring.recruit.vo.CareerVo;
@@ -44,7 +45,6 @@ import com.spring.recruit.vo.CertificateVo;
 import com.spring.recruit.vo.EducationVo;
 import com.spring.recruit.vo.LoginVo;
 import com.spring.recruit.vo.MainVo;
-import com.spring.recruit.vo.PageVo;
 import com.spring.recruit.vo.RecruitVo;
 import com.sun.org.glassfish.gmbal.ParameterNames;
 
@@ -76,31 +76,70 @@ public class RecruitController {
 			session.removeAttribute("login");
 		}
 		
-		
 		RecruitVo loginvo = recruitService.recruitLogin(recruitVo);
-
-
+		
 		if(loginvo != null) { // 로그인 성공
 			System.out.println("로그인 성공");
 			session.setAttribute("login", loginvo);
 			returnURL = "redirect:/recruit/main";
 		} else {
-			System.out.println("로그인 실패");
+			 System.out.println("로그인 실패 회원가입 시작::");
+			int join = recruitService.recruitJoin(recruitVo);
+			if(join>0) {
+				loginvo = recruitService.recruitLogin(recruitVo);
+				session.setAttribute("login", loginvo);
+				returnURL = "redirect:/recruit/main";
+			}else {
+				System.out.println("join 0 check::");
+			}
+			
+			
 			returnURL = "redirect:/recruit/login";
 		}
 
 		return returnURL;
 	}
+	
+	
+	
 
 	
 	 @RequestMapping(value = "/recruit/main", method = RequestMethod.GET)
 	 public String recruitMain(Locale locale, 
 			 HttpSession session,
 			 Model model ) throws Exception{
-		RecruitVo loginVo = (RecruitVo) session.getAttribute("login");
-	   model.addAttribute("recruit", loginVo);
-	   
-	  return "recruit/recruitMain"; 
+		 
+		 RecruitVo loginVo = (RecruitVo) session.getAttribute("login");
+		 String submitCheck = loginVo.getSubmit();
+		 System.out.println(":::"+ loginVo.getSubmit());
+		 System.out.println(":::"+ submitCheck.equals("2"));
+		 model.addAttribute("recruit", loginVo);
+		 
+		 if (submitCheck.equals("2")) {
+			 EducationVo educationVo = recruitService.selectEducation(loginVo);
+			 CareerVo careerVo = recruitService.selectCareer(loginVo);			 
+			 CertificateVo certificateVo = recruitService.selectCertificate(loginVo);
+			 
+			 int educationYear = calculateYears(educationVo.getStartPeriod(),educationVo.getEndPeriod());
+			 int careerYear = calculateYears(careerVo.getStartPeriod(), careerVo.getEndPeriod());		 
+			 int careerRemainingMonths =calculateRemainingMonths(careerVo.getStartPeriod(), careerVo.getEndPeriod());
+
+			 model.addAttribute("educationYear", educationYear);
+			 model.addAttribute("careerYear", careerYear);
+			 model.addAttribute("careerRemainingMonths", careerRemainingMonths);
+			 
+			 
+			 model.addAttribute("education", educationVo);
+			 model.addAttribute("career", careerVo);
+			 model.addAttribute("certificate", certificateVo);
+			 
+			 return "recruit/recruitMainSubmit"; 
+		 } else if(submitCheck.equals('1')) {
+			 return "recruit/recruitSave";
+		 } else {
+			 return "recruit/recruitMain";			 
+		 }
+
 	  
 	 }
 	 
@@ -122,7 +161,7 @@ public class RecruitController {
 			 Model model ) throws Exception{
 		 	
 		 //Vo에 안담기는 파라미터 직접 담아주기
-		 recruitVo.setLocation(recruitLocation);
+		 recruitVo.setLocation(recruitLocation);		 
 		 educationVo.setStartPeriod(educationStartPeriod);
 		 educationVo.setEndPeriod(educationEndPeriod);
 		 educationVo.setLocation(educationLocation);
@@ -130,15 +169,7 @@ public class RecruitController {
 		 careerVo.setEndPeriod(careerEndPeriod);
 		 careerVo.setLocation(careerLocation);
 		 	
-		 System.out.println("::recruitVo "+recruitVo.getName());
-		 System.out.println("::recruitVo2 "+recruitVo.getBirth());
-		 
-		 System.out.println("::educationVo "+educationVo.getGrade());
-		 System.out.println("::educationVo "+educationVo.getStartPeriod());
-		 System.out.println("::careerVo "+careerVo.getTask());
-		 System.out.println("::careerVo "+careerVo.getStartPeriod());
-		 System.out.println("::certificateVo "+certificateVo.getOrganizeName());
-				 
+		
 		 model.addAttribute("recruit", recruitVo);
 		 model.addAttribute("education", educationVo);
 		 model.addAttribute("career", careerVo);
@@ -174,29 +205,45 @@ public class RecruitController {
 		 careerVo.setEndPeriod(careerEndPeriod);
 		 careerVo.setLocation(careerLocation);
 		 	
-		 System.out.println("::recruitVo "+recruitVo.getName());
-		 System.out.println("::recruitVo2 "+recruitVo.getBirth());
+//		 System.out.println("::recruitVo "+recruitVo.getName());
+//		 System.out.println("::recruitVo2 "+recruitVo.getBirth());
+//		 
+//		 System.out.println("::educationVo "+educationVo.getGrade());
+//		 System.out.println("::educationVo "+educationVo.getStartPeriod());
+//		 System.out.println("::careerVo "+careerVo.getTask());
+//		 System.out.println("::careerVo "+careerVo.getStartPeriod());
+//		 System.out.println("::certificateVo "+certificateVo.getOrganizeName());
+//				 
+//		 int educationYear = calculateYears(educationVo.getStartPeriod(),educationVo.getEndPeriod());
+//		 int careerYear = calculateYears(careerVo.getStartPeriod(), careerVo.getEndPeriod());		 
+//		 int careerRemainingMonths =calculateRemainingMonths(careerVo.getStartPeriod(), careerVo.getEndPeriod());
+//		 
+//		 
+//		 model.addAttribute("recruit", recruitVo);
+//		 model.addAttribute("education", educationVo);
+//		 
+//		 model.addAttribute("educationYear", educationYear);
+//		 model.addAttribute("careerYear", careerYear);
+//		 model.addAttribute("careerRemainingMonths", careerRemainingMonths);
+//		 
+//		 model.addAttribute("career", careerVo);
+//		 model.addAttribute("certificate", certificateVo);
 		 
-		 System.out.println("::educationVo "+educationVo.getGrade());
-		 System.out.println("::educationVo "+educationVo.getStartPeriod());
-		 System.out.println("::careerVo "+careerVo.getTask());
-		 System.out.println("::careerVo "+careerVo.getStartPeriod());
-		 System.out.println("::certificateVo "+certificateVo.getOrganizeName());
-				 
-		 int educationYear = calculateYears(educationVo.getStartPeriod(),educationVo.getEndPeriod());
-		 int careerYear = calculateYears(careerVo.getStartPeriod(), careerVo.getEndPeriod());		 
-		 int careerRemainingMonths =calculateRemainingMonths(careerVo.getStartPeriod(), careerVo.getEndPeriod());
+		 int recruitResult = recruitService.recruitInsert(recruitVo);
+		 System.out.println("recruitResult::" + recruitResult);
+		 int educationResult = recruitService.educationInsert(educationVo, recruitVo);
+		 System.out.println("educationResult::" +educationResult);
+		 int careerResult = recruitService.careerInsert(careerVo, recruitVo);
+		 System.out.println("careerResult::" +careerResult);
+		 int certificateResult = recruitService.certificateInsert(certificateVo, recruitVo);
+		 System.out.println("certificateResult::" +certificateResult);
 		 
-		 
-		 model.addAttribute("recruit", recruitVo);
-		 model.addAttribute("education", educationVo);
-		 
-		 model.addAttribute("educationYear", educationYear);
-		 model.addAttribute("careerYear", careerYear);
-		 model.addAttribute("careerRemainingMonths", careerRemainingMonths);
-		 
-		 model.addAttribute("career", careerVo);
-		 model.addAttribute("certificate", certificateVo);
+		 if(recruitResult > 0 && educationResult > 0 && careerResult > 0 && certificateResult > 0) {
+			 System.out.println("제출 성공");
+			 recruitService.recruitSave(recruitVo);
+		 }else {
+			 System.out.println("제출 실패");
+		 }
 	  
 	  return "recruit/recruitMainSave"; 
 	  
@@ -221,40 +268,55 @@ public class RecruitController {
 		 	
 		 //Vo에 안담기는 파라미터 직접 담아주기
 		 recruitVo.setLocation(recruitLocation);
+//		 educationVo.setSeq(recruitVo.getSeq());
 		 educationVo.setStartPeriod(educationStartPeriod);
 		 educationVo.setEndPeriod(educationEndPeriod);
 		 educationVo.setLocation(educationLocation);
+//		 careerVo.setSeq(recruitVo.getSeq());
 		 careerVo.setStartPeriod(careerStartPeriod);
 		 careerVo.setEndPeriod(careerEndPeriod);
 		 careerVo.setLocation(careerLocation);
+//		 certificateVo.setSeq(recruitVo.getSeq());
 		 	
-		 System.out.println("::recruitVo "+recruitVo.getName());
-		 System.out.println("::recruitVo2 "+recruitVo.getBirth());
-		 
-		 System.out.println("::educationVo "+educationVo.getGrade());
-		 System.out.println("::educationVo "+educationVo.getStartPeriod());
-		 System.out.println("::careerVo "+careerVo.getTask());
-		 System.out.println("::careerVo "+careerVo.getStartPeriod());
-		 System.out.println("::certificateVo "+certificateVo.getOrganizeName());
+
 		
-		 int educationYear = calculateYears(educationVo.getStartPeriod(),educationVo.getEndPeriod());
-		 int careerYear = calculateYears(careerVo.getStartPeriod(), careerVo.getEndPeriod());		 
-		 int careerRemainingMonths =calculateRemainingMonths(careerVo.getStartPeriod(), careerVo.getEndPeriod());
+//		 int educationYear = calculateYears(educationVo.getStartPeriod(),educationVo.getEndPeriod());
+//		 int careerYear = calculateYears(careerVo.getStartPeriod(), careerVo.getEndPeriod());		 
+//		 int careerRemainingMonths =calculateRemainingMonths(careerVo.getStartPeriod(), careerVo.getEndPeriod());
+//		 
+//		 
+//		 model.addAttribute("recruit", recruitVo);
+//		 model.addAttribute("education", educationVo);
+//		 
+//		 model.addAttribute("educationYear", educationYear);
+//		 model.addAttribute("careerYear", careerYear);
+//		 model.addAttribute("careerRemainingMonths", careerRemainingMonths);
+//		 
+//		 model.addAttribute("career", careerVo);
+//		 model.addAttribute("certificate", certificateVo);
+//		 
+//		 System.out.println("seq::"+recruitVo.getSeq());
+//		 System.out.println("seq::"+recruitVo.getName());
+//		 System.out.println("seq::"+recruitVo.getPhone());
+//		 
 		 
+		 int recruitResult = recruitService.recruitInsert(recruitVo);
+		 System.out.println("recruitResult::" + recruitResult);
+		 int educationResult = recruitService.educationInsert(educationVo, recruitVo);
+		 System.out.println("educationResult::" +educationResult);
+		 int careerResult = recruitService.careerInsert(careerVo, recruitVo);
+		 System.out.println("careerResult::" +careerResult);
+		 int certificateResult = recruitService.certificateInsert(certificateVo, recruitVo);
+		 System.out.println("certificateResult::" +certificateResult);
 		 
-		 model.addAttribute("recruit", recruitVo);
-		 model.addAttribute("education", educationVo);
-		 
-		 model.addAttribute("educationYear", educationYear);
-		 model.addAttribute("careerYear", careerYear);
-		 model.addAttribute("careerRemainingMonths", careerRemainingMonths);
-		 
-		 model.addAttribute("career", careerVo);
-		 model.addAttribute("certificate", certificateVo);
-		 
-		 
+		 if(recruitResult > 0 && educationResult > 0 && careerResult > 0 && certificateResult > 0) {
+			 System.out.println("제출 성공");
+			 recruitService.recruitSubmit(recruitVo);
+		 }else {
+			 System.out.println("제출 실패");
+		 }
 	  
-	  return "recruit/recruitMainSubmit"; 
+	  return "redirect:/recruit/main"; 
 	  
 	 }
 	 

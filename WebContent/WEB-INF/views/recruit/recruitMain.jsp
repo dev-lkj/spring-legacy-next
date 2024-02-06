@@ -86,6 +86,7 @@
 </script>
 <body>
 	<form id="myform" method="POST" accept-charset="UTF-8">
+		<input type="hidden" name="seq" value="${recruit.seq}"/>
 		<table width="1000" align="center" border="2" style="padding: 10px 0;">
 			<tr>
 				<td align="center" style="border: none;">
@@ -146,6 +147,35 @@
 					</table>
 				</td>
 			</tr>
+			
+			<tr style="border: none;">
+				<td style="border: none;"><br /></td>
+			</tr>
+			
+			<c:choose>
+   			 <c:when test="${not empty sessionScope.login}">
+			
+			<tr>
+				<td style="border: none;">
+					<table width="900" align="center" border="2">
+						<tr>
+							<td align="center" style="font-weight: bold;">학력사항</td>
+							<td align="center" style="font-weight: bold;">경력사항</td>
+							<td align="center" style="font-weight: bold;">희망연봉</td>
+							<td align="center" style="font-weight: bold;">희망근무지/근무형태</td>
+						</tr>
+						<tr>
+							<td>대학교(${educationYear}년) ${education.division}</td>
+							<td>경력 ${careerYear}년 ${careerRemainingMonths}개월</td>
+							<td>회사내규에 따름</td>
+							<td>${recruit.location}전체<br /> ${recruit.workType}
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			</c:when>
+			</c:choose>
 
 			<tr style="border: none;">
 				<td style="border: none;"><br /></td>

@@ -4,6 +4,7 @@
 <mapper namespace="recruit">
    
     <resultMap type="com.spring.recruit.vo.RecruitVo" id="recruitVo">
+    	<result property="seq" 	column="SEQ"/>
     	<result property="name" 	column="NAME"/>
     	<result property="birth" 	column="BIRTH"/>
     	<result property="gender" 	column="GENDER"/>
@@ -12,11 +13,46 @@
     	<result property="addr" 	column="ADDR"/>
     	<result property="location" 	column="LOCATION"/>
     	<result property="workType" 	column="WORK_TYPE"/>
+    	<result property="submit" 	column="SUBMIT"/>
     </resultMap>
+    
+    <resultMap type="com.spring.recruit.vo.EducationVo" id="educationVo">
+    	<result property="eduSeq" 	column="EDU_SEQ"/>
+    	<result property="seq" 	column="SEQ"/>
+    	<result property="schoolName" 	column="SCHOOL_NAME"/>
+    	<result property="division" 	column="DIVISION"/>
+    	<result property="startPeriod" 	column="START_PERIOD"/>
+    	<result property="endPeriod" column="END_PERIOD"/>
+    	<result property="major" 	column="MAJOR"/>
+    	<result property="grade" 	column="GRADE"/>
+    	<result property="location" 	column="LOCATION"/>
+    </resultMap>
+    
+    <resultMap type="com.spring.recruit.vo.CareerVo" id="careerVo">
+    	<result property="carSeq" 	column="CAR_SEQ"/>
+    	<result property="seq" 	column="SEQ"/>
+    	<result property="compName" 	column="COMP_NAME"/>
+    	<result property="location" 	column="LOCATION"/>
+    	<result property="startPeriod" 	column="START_PERIOD"/>
+    	<result property="endPeriod" column="END_PERIOD"/>
+    	<result property="task" 	column="TASK"/>
+    	<result property="SALARY" 	column="SALARY"/>
+    </resultMap>
+    
+    <resultMap type="com.spring.recruit.vo.CertificateVo" id="certificateVo">
+    	<result property="certSeq" 	column="CERT_SEQ"/>
+    	<result property="seq" 	column="SEQ"/>
+    	<result property="qualifiName" 	column="QUALIFI_NAME"/>
+    	<result property="acquDate" 	column="ACQU_DATE"/>
+    	<result property="organizeName" 	column="ORGANIZE_NAME"/>
+    </resultMap>
+    
+    
     
     <select id="selectLogin" parameterType="com.spring.recruit.vo.RecruitVo" resultMap="recruitVo">
         SELECT 
-		  NAME
+          SEQ
+		  ,NAME
 		  ,BIRTH
 		  ,GENDER
 		  ,PHONE
@@ -24,12 +60,196 @@
 		  ,ADDR
 		  ,LOCATION
 		  ,WORK_TYPE
+		  ,SUBMIT
 		FROM 
 			RECRUIT
 		WHERE
 			NAME = #{name} AND PHONE = #{phone}
     </select>
-
+    
+    <select id="selectEducation" parameterType="com.spring.recruit.vo.RecruitVo" resultMap="educationVo">
+        SELECT 
+          EDU_SEQ
+		  ,SEQ
+		  ,SCHOOL_NAME
+		  ,DIVISION
+		  ,START_PERIOD
+		  ,END_PERIOD
+	      ,MAJOR
+	      ,GRADE
+	      ,LOCATION
+		FROM 
+			EDUCATION
+		WHERE
+			SEQ = #{seq}
+    </select>
+    
+    <select id="selectCareer" parameterType="com.spring.recruit.vo.RecruitVo" resultMap="careerVo">
+        SELECT 
+         CAR_SEQ
+         ,SEQ
+         ,COMP_NAME
+         ,LOCATION
+         ,START_PERIOD
+         ,END_PERIOD
+         ,TASK
+         ,SALARY
+		FROM 
+			CAREER
+		WHERE
+			SEQ = #{seq}
+    </select>
+    
+    <select id="selectCertificate" parameterType="com.spring.recruit.vo.RecruitVo" resultMap="certificateVo">
+        SELECT 
+          CERT_SEQ
+          ,SEQ
+          ,QUALIFI_NAME
+          ,ACQU_DATE
+          ,ORGANIZE_NAME
+		FROM 
+			CERTIFICATE
+		WHERE
+			SEQ = #{seq}
+    </select>
+    
+    
+    <insert id="recruitJoin" parameterType="com.spring.recruit.vo.RecruitVo">
+        INSERT INTO 
+        RECRUIT 
+        (
+        SEQ
+        ,NAME
+        ,BIRTH
+        ,GENDER
+        ,PHONE
+        ,EMAIL
+        ,ADDR
+        ,LOCATION
+        ,WORK_TYPE
+        )
+        VALUES
+        (
+        NVL( (SELECT TO_NUMBER(MAX(SEQ)+1)
+	    FROM RECRUIT),1)
+        ,#{name, jdbcType=VARCHAR}
+        ,#{birth, jdbcType=VARCHAR}
+	    ,#{gender, jdbcType=VARCHAR}
+	    ,#{phone, jdbcType=VARCHAR}
+        ,#{email, jdbcType=VARCHAR}
+        ,#{addr, jdbcType=VARCHAR}
+        ,#{location, jdbcType=VARCHAR}
+        ,#{workType, jdbcType=VARCHAR}
+        )
+    </insert>
+    
+    <update id="recruitInsert" parameterType="com.spring.recruit.vo.RecruitVo">
+        UPDATE
+        RECRUIT
+        SET
+        NAME = #{name}
+        ,BIRTH = #{birth}
+        ,GENDER = #{gender}
+        ,PHONE = #{phone}
+        ,EMAIL = #{email}
+        ,ADDR = #{addr}
+        ,LOCATION = #{location}
+        ,WORK_TYPE = #{workType}
+       	WHERE NAME = #{name} AND PHONE = #{phone}
+    </update>
+    
+    <update id="recruitSave" parameterType="com.spring.recruit.vo.RecruitVo">
+        UPDATE
+        RECRUIT
+        SET
+        SUBMIT = 1
+       	WHERE NAME = #{name} AND PHONE = #{phone}
+    </update>
+    
+    <update id="recruitSubmit" parameterType="com.spring.recruit.vo.RecruitVo">
+        UPDATE
+        RECRUIT
+        SET
+        SUBMIT = 2
+       	WHERE NAME = #{name} AND PHONE = #{phone}
+    </update>
+    
+    
+ <insert id="educationInsert" parameterType="map">
+        INSERT INTO 
+        EDUCATION 
+        (EDU_SEQ
+        ,SEQ
+        ,SCHOOL_NAME
+        ,DIVISION
+        ,START_PERIOD
+        ,END_PERIOD
+        ,MAJOR
+        ,GRADE
+        ,LOCATION
+        )
+        VALUES
+        ( 
+         NVL( (SELECT TO_NUMBER(MAX(EDU_SEQ)+1)
+	     FROM EDUCATION),  1)
+        ,#{recruitVo.seq}
+        ,#{educationVo.schoolName, jdbcType=VARCHAR}
+        ,#{educationVo.division, jdbcType=VARCHAR}
+	    ,#{educationVo.startPeriod, jdbcType=VARCHAR}
+	    ,#{educationVo.endPeriod, jdbcType=VARCHAR}
+        ,#{educationVo.major, jdbcType=VARCHAR}
+        ,#{educationVo.grade, jdbcType=VARCHAR}
+        ,#{educationVo.location, jdbcType=VARCHAR}
+        )
+    </insert> 
+    
+ <insert id="careerInsert" parameterType="map">
+        INSERT INTO 
+        CAREER
+        (
+        CAR_SEQ
+        ,SEQ
+        ,COMP_NAME
+        ,LOCATION
+        ,START_PERIOD
+        ,END_PERIOD
+        ,TASK
+        )
+        VALUES
+        (
+        NVL( (SELECT TO_NUMBER(MAX(CAR_SEQ)+1)
+	     FROM CAREER),1)
+        ,#{recruitVo.seq}
+        ,#{careerVo.compName}
+        ,#{careerVo.location}
+	    ,#{careerVo.startPeriod}
+	    ,#{careerVo.endPeriod}
+        ,#{careerVo.task}
+        )
+    </insert>
+    
+    
+    <insert id="certificateInsert" parameterType="map">
+        INSERT INTO 
+        CERTIFICATE
+        (
+        CERT_SEQ
+        ,SEQ
+        ,QUALIFI_NAME
+        ,ACQU_DATE
+        ,ORGANIZE_NAME
+        )
+        VALUES
+        (
+         NVL( (SELECT TO_NUMBER(MAX(CERT_SEQ)+1)
+	     FROM CERTIFICATE),1)
+        ,#{recruitVo.seq}
+        ,#{certificateVo.qualifiName}
+        ,#{certificateVo.acquDate}
+	    ,#{certificateVo.organizeName}
+        )
+    </insert>
+ 
     
  
     

@@ -2,6 +2,7 @@ package com.spring.recruit.vo;
 
 public class RecruitVo {
 	
+	private String  seq;
 	private String  name;
 	private String 	birth;
 	private String 	gender;
@@ -10,9 +11,16 @@ public class RecruitVo {
 	private String 	addr;
 	private String	location;
 	private String	workType;
+	private String  submit;
 	
 	
 	
+	public String getSeq() {
+		return seq;
+	}
+	public void setSeq(String seq) {
+		this.seq = seq;
+	}
 	public String getName() {
 		return name;
 	}
@@ -61,8 +69,15 @@ public class RecruitVo {
 	public void setWorkType(String workType) {
 		this.workType = workType;
 	}
+	public String getSubmit() {
+		return submit;
+	}
+	public void setSubmit(String submit) {
+		this.submit = submit;
+	}
 	
 	
+
 	
 	
 	

@@ -10,84 +10,69 @@
 <script type="text/javascript">
 	$j(document).ready(function() {
 		
-		$j("select[name=gender]").val("${recruit.gender}").prop("selected",true);
-		$j("select[name=recruitVo.location]").val("${recruit.location}").prop("selected",true);
-		$j("select[name=workType]").val("${recruit.workType}").prop("selected",true);
-		$j("select[name=division]").val("${education.division}").prop("selected",true);
-		$j("select[name=educationVo.location]").val("${education.location}").prop("selected",true);
-
 		
 
 	});
 </script>
 <body>
 	<form id="myform" method="POST" accept-charset="UTF-8">
+		<input type="hidden" name="seq" value="${recruit.seq}"/>
 		<table width="1000" align="center" border="2" style="padding: 10px 0;">
 			<tr>
 				<td align="center" style="border: none;">
 					<table align="center" border="2">
 						<tr align="center" style="font-weight: bold;">
 							<td width="100">
-								<label for="name">이름</label>
+								이름
 							</td>
 							<td align="left">
-								<input readOnly id="name" type="text" name="name" value="${recruit.name}" />
+								<span>${recruit.name}</span>
 							</td>
 							<td>
-								<label for="birth">생년월일</label>
+								생년월일
 							</td>
 							<td align="left">
-								<input readOnly id="birth" type="text" name="birth" value="${recruit.birth}" />
+								<span>${recruit.birth}</span>
 							</td>
 						</tr>
 						<tr align="center" style="font-weight: bold;">
 							<td>
-								<label for="gender">성별</label>
+								성별
 							</td>
 							<td align="left">
-								<select	name="gender">
-									<option value="남자">남자</option>
-									<option  value="여자">여자</option>
-								</select>
+								<span>${recruit.gender}</span>
 							</td>
 							<td>
-								<label for="phone">연락처</label>
+								연락처
 							</td>
 							<td>
-								<input readOnly id="phone" type="text" name="phone" value="${recruit.phone}" />
+								<span>${recruit.phone}</span>
 							</td>
 						</tr>
 						<tr align="center" style="font-weight: bold;">
 							<td>
-								<label for="email">이메일</label>
+								이메일
 							</td>
 							<td align="left">
-								<input readOnly id="email" type="text" name="email" value="${recruit.email}" />
+								<span>${recruit.email}</span>
 							</td>
 							<td>
-								<label for="addr">주소</label>
+								주소
 							</td>
-							<td>
-								<input readOnly id="addr" type="text" name="addr" value="${recruit.addr}" />
+							<td align="left">
+								<span>${recruit.addr}</span>
 							</td>
 						</tr>
 						<tr align="center" style="font-weight: bold;">
 							<td>
-								<label for="location">희망근무지</label>
+								희망근무지
 							</td>
 							<td align="left">
-								<select name="recruitVo.location">
-									<option  value="서울">서울</option>
-									<option  value="경기">경기</option>
-									<option value="인천">인천</option>
-								</select>
+								<span>${recruit.location}</span>
 							</td>
 							<td><label for="workType">근무형태</label></td>
 							<td align="left">
-								<select name="workType">
-									<option value="정규직">정규직</option>
-									<option value="계약직">계약직</option>
-								</select>
+								<span>${recruit.workType}</span>
 							</td>
 						</tr>
 					</table>
@@ -127,20 +112,15 @@
 			</tr>
 
 			<tr>
-				<td align="left"
-					style="border: none; font-weight: bold; font-size: 18px;">학력</td>
+				<td align="left" style="border: none; font-weight: bold; font-size: 18px;">학력</td>
 			</tr>
 			<tr style="border: none;">
-				<td align="right" style="border: none;">
-					<button disabled="disabled" type="button" id="educationAdd">추가</button>
-					<button disabled="disabled" type="button" id="educationDelete">삭제</button>
-				</td>
+			
 			</tr>
 			<tr>
 				<td style="border: none;">
 					<table id="educationTable" width="900" align="center" border="2">
 						<tr>
-							<td></td>
 							<td align="center" style="font-weight: bold;">재학기간</td>
 							<td align="center" style="font-weight: bold;">구분</td>
 							<td align="center" style="font-weight: bold;">학교명(소재지)</td>
@@ -187,37 +167,23 @@
 <%-- 						</c:when> --%>
 <%-- 						<c:otherwise> --%>
 							<tr class="educationRow">
-									<td align="center">
-										<input readOnly type="checkbox" class="educationCheckbox"/>
-									</td>
 									<td>
-										<input readOnly type="text" name="educationVo.startPeriod" value="${education.startPeriod}" /><br /> 
+										<span>${education.startPeriod}</span><br/> 
 										~<br /> 
-										<input readOnly type="text" name="educationVo.endPeriod"	value="${education.endPeriod}" />
+										<span>${education.endPeriod}</span>
 									</td>
 									<td>
-										<select name="division">
-											<option value="졸업">졸업</option>
-											<option value="재학">재학</option>
-											<option value="중퇴">중퇴</option>
-										</select>
+										<span>${education.division}</span>
 									</td>
 									<td>
-										<input type="text" name="schoolName" value="${education.schoolName}" /> 
-										<select	name="educationVo.location">
-											<option value="서울">서울</option>
-											<option value="경기">경기</option>
-											<option value="강원">강원</option>
-											<option value="전라도">전라도</option>
-											<option value="경상도">경상도</option>
-											<option value="제주도">제주도</option>
-										</select>
+										<span>${education.schoolName}</span><br/>
+										<span>${education.location}</span> 										
 									</td>
 									<td>
-										<input type="text" name="major" value="${education.major}" />
+										<span>${education.major}</span>
 									</td>
 									<td>
-										<input type="text" name="grade" value="${education.grade}" />
+										<span>${education.grade}</span>
 									</td>
 								</tr>
 <%-- 						</c:otherwise> --%>
@@ -235,15 +201,13 @@
 			</tr>
 			<tr>
 				<td align="right" style="border: none;">
-					<button disabled="disabled" type="button" id="careerAdd">추가</button>
-					<button disabled="disabled" type="button" id="careerDelete">삭제</button>
+					
 				</td>
 			</tr>
 			<tr>
 				<td style="border: none;">
 					<table id="careerTable" width="900" align="center" border="2">
 						<tr>
-							<td ></td>
 							<td align="center" style="font-weight: bold;">근무기간</td>
 							<td align="center" style="font-weight: bold;">회사명</td>
 							<td align="center" style="font-weight: bold;">부서/직급/직책</td>
@@ -275,19 +239,18 @@
 <%-- 							</c:when> --%>
 <%-- 							<c:otherwise> --%>
 								<tr class="careerRow">
-									<td><input readOnly type="checkbox" class="careerCheckbox"/></td>
 									<td>
-										<input readOnly type="text" name="careerVo.startPeriod" value="${career.startPeriod}" />~<br />
-									    <input readOnly type="text" name="careerVo.endPeriod" value="${career.endPeriod}" />
+										<span>${career.startPeriod}</span>~<br />
+									    <span>${career.endPeriod}</span>
 									</td>
 									<td>
-										<input readOnly type="text" name="compName" value="${career.compName}" />
+										<span>${career.compName}</span>
 									</td>
 									<td>
-										<input readOnly type="text" name="task" value="${career.task}" />
+										<span>${career.task}</span>
 									</td>
 									<td>
-										<input readOnly type="text" name="careerVo.location" value="${career.location}" />
+										<span>${career.location}</span>
 									</td>
 								</tr>
 <%-- 							</c:otherwise> --%>
@@ -304,15 +267,13 @@
 			</tr>
 			<tr>
 				<td align="right" style="border: none;">
-					<button disabled="disabled" type="button" id="certificateAdd">추가</button>
-					<button disabled="disabled" type="button" id="certificateDelete">삭제</button>
+					
 				</td>
 			</tr>
 			<tr>
 				<td style="border: none;">
 					<table id="certificateTable" width="900" align="center" border="2">
 						<tr>
-							<td width="24"></td>
 							<td align="center" style="font-weight: bold;">자격증명</td>
 							<td align="center" style="font-weight: bold;">취득일</td>
 							<td align="center" style="font-weight: bold;">발행처</td>
@@ -338,15 +299,14 @@
 <%-- 						</c:when> --%>
 <%-- 						<c:otherwise> --%>
 							<tr class="certificateRow">
-								<td><input readOnly type="checkbox" class="certificateCheckbox" /></td>
 								<td>
-									<input readOnly type="text" name="qualifiName" value="${certificate.qualifiName}" />
+									<span>${certificate.qualifiName}</span>
 								</td>
 								<td>
-									<input readOnly type="text" name="acquDate" value="${certificate.acquDate}" />
+									<span>${certificate.acquDate}</span>
 								</td>
 								<td>
-									<input readOnly type="text" name="organizeName" value="${certificate.organizeName}" />
+									<span>${certificate.organizeName}</span>
 								</td>
 							</tr>
 <%-- 						</c:otherwise> --%>
@@ -357,13 +317,6 @@
 
 
 		</table>
-		<p style="text-align: center">
-			<button disabled="disabled" type="submit" id="saveButton">저장</button>
-			<button disabled="disabled" type="submit" id="submitButton">제출</button>
-		</p>
-
-
-
 
 	</form>
 </body>

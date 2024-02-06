@@ -9,84 +9,14 @@
 </head>
 <script type="text/javascript">
 	$j(document).ready(function() {
+		
 		$j("select[name=gender]").val("${recruit.gender}").prop("selected",true);
 		$j("select[name=recruitVo.location]").val("${recruit.location}").prop("selected",true);
 		$j("select[name=workType]").val("${recruit.workType}").prop("selected",true);
 		$j("select[name=division]").val("${education.division}").prop("selected",true);
 		$j("select[name=educationVo.location]").val("${education.location}").prop("selected",true);
+
 		
-		
-		$j("#educationAdd").on("click", function() {
-			 var newRow = $j("#educationTable .educationRow:first").clone();
-			// 클론된 행에서 input과 select 요소를 찾아서 값을 초기화
-		    newRow.find('input[type="text"]').val('');
-		    newRow.find('select:first').val('졸업');
-		    newRow.find('select:last').val('서울');
-		    
-			$j("#educationTable").append(newRow);
-			
-		});
-
-		$j("#careerAdd").on("click", function() {
-			var newRow = $j("#careerTable .careerRow:first").clone();
-		    newRow.find('input[type="text"]').val('');		    
-			$j("#careerTable").append(newRow);
-		});
-
-		$j("#certificateAdd").on("click", function() {
-			var newRow = $j("#certificateTable .certificateRow:first").clone();
-			newRow.find('input[type="text"]').val('');		    
-			$j("#certificateTable").append(newRow);
-		});
-
-		$j("#educationDelete").on("click", function() {
-			var educationRows = $j("#educationTable .educationRow");
-		    var checkedRows = educationRows.has(".educationCheckbox:checked");
-		    
-		    if (educationRows.length > 1 && checkedRows.length > 0) {
-		        checkedRows.remove();
-		    } else {
-		        alert("최소한 한 행은 남겨주세요.");
-		    }
-		});
-
-		$j("#careerDelete").on("click", function() {
-			
-			var careerRows = $j("#careerTable .careerRow");
-		    var checkedRows = careerRows.has(".careerCheckbox:checked");
-		    
-		    if (careerRows.length > 1 && checkedRows.length > 0) {
-		        checkedRows.remove();
-		    } else {
-		        alert("최소한 한 행은 남겨주세요.");
-		    }
-		});
-
-		$j("#certificateDelete").on("click", function() {
-			
-			var certificateRows = $j("#certificateTable .certificateRow");
-		    var checkedRows = certificateRows.has(".certificateCheckbox:checked");
-		    
-		    if (certificateRows.length > 1 && checkedRows.length > 0) {
-		        checkedRows.remove();
-		    } else {
-		        alert("최소한 한 행은 남겨주세요.");
-		    }
-			
-		});
-		
-		$j("#saveButton").on("click",function(){
-			$j("#myform").action = "/recruit/main/save";
-			$j("#myform").submit();
-			alert("save");
-				
-		});
-		
-		$j("#submitButton").on("click",function(){
-			$j("#myform").action = "/recruit/main/submit";
-			$j("#myform").submit();
-			alert("submit");
-		});
 
 	});
 </script>
@@ -97,46 +27,65 @@
 				<td align="center" style="border: none;">
 					<table align="center" border="2">
 						<tr align="center" style="font-weight: bold;">
-							<td width="100"><label for="name">이름</label></td>
-							<td align="left"><input id="name" type="text" name="name"
-								value="${recruit.name}" /></td>
-							<td><label for="birth">생년월일</label></td>
-							<td align="left"><input id="birth" type="text" name="birth"
-								value="${recruit.birth}" /></td>
+							<td width="100">
+								<label for="name">이름</label>
+							</td>
+							<td align="left">
+								<input readOnly id="name" type="text" name="name" value="${recruit.name}" />
+							</td>
+							<td>
+								<label for="birth">생년월일</label>
+							</td>
+							<td align="left">
+								<input readOnly id="birth" type="text" name="birth" value="${recruit.birth}" />
+							</td>
 						</tr>
 						<tr align="center" style="font-weight: bold;">
-							<td><label for="gender">성별</label></td>
+							<td>
+								<label for="gender">성별</label>
+							</td>
 							<td align="left">
-								<select	name="gender" value="${recruit.gender}">
-									<option selected value="남자">남자</option>
-									<option value="여자">여자</option>
+								<select	name="gender">
+									<option value="남자">남자</option>
+									<option  value="여자">여자</option>
 								</select>
 							</td>
-							<td><label for="phone">연락처</label></td>
-							<td><input id="phone" type="text" name="phone"
-								value="${recruit.phone}" /></td>
+							<td>
+								<label for="phone">연락처</label>
+							</td>
+							<td>
+								<input readOnly id="phone" type="text" name="phone" value="${recruit.phone}" />
+							</td>
 						</tr>
 						<tr align="center" style="font-weight: bold;">
-							<td><label for="email">이메일</label></td>
-							<td align="left"><input id="email" type="text" name="email"
-								value="${recruit.email}" /></td>
-							<td><label for="addr">주소</label></td>
-							<td><input id="addr" type="text" name="addr"
-								value="${recruit.addr}" /></td>
-						</tr>
-						<tr align="center" style="font-weight: bold;">
-							<td><label for="location">희망근무지</label></td>
+							<td>
+								<label for="email">이메일</label>
+							</td>
 							<td align="left">
-								<select name="recruitVo.location" value="${recruit.location}">
-									<option selected value="서울">서울</option>
-									<option value="경기">경기</option>
+								<input readOnly id="email" type="text" name="email" value="${recruit.email}" />
+							</td>
+							<td>
+								<label for="addr">주소</label>
+							</td>
+							<td>
+								<input readOnly id="addr" type="text" name="addr" value="${recruit.addr}" />
+							</td>
+						</tr>
+						<tr align="center" style="font-weight: bold;">
+							<td>
+								<label for="location">희망근무지</label>
+							</td>
+							<td align="left">
+								<select name="recruitVo.location">
+									<option  value="서울">서울</option>
+									<option  value="경기">경기</option>
 									<option value="인천">인천</option>
 								</select>
 							</td>
 							<td><label for="workType">근무형태</label></td>
 							<td align="left">
-								<select name="workType" value="${recruit.workType}">
-									<option selected value="정규직">정규직</option>
+								<select name="workType">
+									<option value="정규직">정규직</option>
 									<option value="계약직">계약직</option>
 								</select>
 							</td>
@@ -150,7 +99,6 @@
 			</tr>
 			<c:choose>
    			 <c:when test="${not empty sessionScope.login}">
-			
 			<tr>
 				<td style="border: none;">
 					<table width="900" align="center" border="2">
@@ -184,8 +132,8 @@
 			</tr>
 			<tr style="border: none;">
 				<td align="right" style="border: none;">
-					<button type="button" id="educationAdd">추가</button>
-					<button type="button" id="educationDelete">삭제</button>
+					<button disabled="disabled" type="button" id="educationAdd">추가</button>
+					<button disabled="disabled" type="button" id="educationDelete">삭제</button>
 				</td>
 			</tr>
 			<tr>
@@ -240,15 +188,15 @@
 <%-- 						<c:otherwise> --%>
 							<tr class="educationRow">
 									<td align="center">
-										<input type="checkbox" class="educationCheckbox"/>
+										<input readOnly type="checkbox" class="educationCheckbox"/>
 									</td>
 									<td>
-										<input type="text" name="educationVo.startPeriod" value="${education.startPeriod}" /><br /> 
+										<input readOnly type="text" name="educationVo.startPeriod" value="${education.startPeriod}" /><br /> 
 										~<br /> 
-										<input type="text" name="educationVo.endPeriod"	value="${education.endPeriod}" />
+										<input readOnly type="text" name="educationVo.endPeriod"	value="${education.endPeriod}" />
 									</td>
 									<td>
-										<select name="division"	value="${education.division}">
+										<select name="division">
 											<option value="졸업">졸업</option>
 											<option value="재학">재학</option>
 											<option value="중퇴">중퇴</option>
@@ -256,7 +204,7 @@
 									</td>
 									<td>
 										<input type="text" name="schoolName" value="${education.schoolName}" /> 
-										<select	name="educationVo.location" value="${education.location}">
+										<select	name="educationVo.location">
 											<option value="서울">서울</option>
 											<option value="경기">경기</option>
 											<option value="강원">강원</option>
@@ -287,8 +235,8 @@
 			</tr>
 			<tr>
 				<td align="right" style="border: none;">
-					<button type="button" id="careerAdd">추가</button>
-					<button type="button" id="careerDelete">삭제</button>
+					<button disabled="disabled" type="button" id="careerAdd">추가</button>
+					<button disabled="disabled" type="button" id="careerDelete">삭제</button>
 				</td>
 			</tr>
 			<tr>
@@ -327,19 +275,19 @@
 <%-- 							</c:when> --%>
 <%-- 							<c:otherwise> --%>
 								<tr class="careerRow">
-									<td><input type="checkbox" class="careerCheckbox"/></td>
+									<td><input readOnly type="checkbox" class="careerCheckbox"/></td>
 									<td>
-										<input type="text" name="careerVo.startPeriod" value="${career.startPeriod}" />~<br />
-									    <input type="text" name="careerVo.endPeriod" value="${career.endPeriod}" />
+										<input readOnly type="text" name="careerVo.startPeriod" value="${career.startPeriod}" />~<br />
+									    <input readOnly type="text" name="careerVo.endPeriod" value="${career.endPeriod}" />
 									</td>
 									<td>
-										<input type="text" name="compName" value="${career.compName}" />
+										<input readOnly type="text" name="compName" value="${career.compName}" />
 									</td>
 									<td>
-										<input type="text" name="task" value="${career.task}" />
+										<input readOnly type="text" name="task" value="${career.task}" />
 									</td>
 									<td>
-										<input type="text" name="careerVo.location" value="${career.location}" />
+										<input readOnly type="text" name="careerVo.location" value="${career.location}" />
 									</td>
 								</tr>
 <%-- 							</c:otherwise> --%>
@@ -356,8 +304,8 @@
 			</tr>
 			<tr>
 				<td align="right" style="border: none;">
-					<button type="button" id="certificateAdd">추가</button>
-					<button type="button" id="certificateDelete">삭제</button>
+					<button disabled="disabled" type="button" id="certificateAdd">추가</button>
+					<button disabled="disabled" type="button" id="certificateDelete">삭제</button>
 				</td>
 			</tr>
 			<tr>
@@ -390,15 +338,15 @@
 <%-- 						</c:when> --%>
 <%-- 						<c:otherwise> --%>
 							<tr class="certificateRow">
-								<td><input type="checkbox" class="certificateCheckbox" /></td>
+								<td><input readOnly type="checkbox" class="certificateCheckbox" /></td>
 								<td>
-									<input type="text" name="qualifiName" value="${certificate.qualifiName}" />
+									<input readOnly type="text" name="qualifiName" value="${certificate.qualifiName}" />
 								</td>
 								<td>
-									<input type="text" name="acquDate" value="${certificate.acquDate}" />
+									<input readOnly type="text" name="acquDate" value="${certificate.acquDate}" />
 								</td>
 								<td>
-									<input type="text" name="organizeName" value="${certificate.organizeName}" />
+									<input readOnly type="text" name="organizeName" value="${certificate.organizeName}" />
 								</td>
 							</tr>
 <%-- 						</c:otherwise> --%>
@@ -410,8 +358,8 @@
 
 		</table>
 		<p style="text-align: center">
-			<button type="submit" id="saveButton">저장</button>
-			<button type="submit" id="submitButton">제출</button>
+			<button disabled="disabled" type="submit" id="saveButton">저장</button>
+			<button disabled="disabled" type="submit" id="submitButton">제출</button>
 		</p>
 
 
