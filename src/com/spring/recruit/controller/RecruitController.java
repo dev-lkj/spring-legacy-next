@@ -46,6 +46,7 @@ import com.spring.recruit.vo.EducationVo;
 import com.spring.recruit.vo.LoginVo;
 import com.spring.recruit.vo.MainVo;
 import com.spring.recruit.vo.RecruitVo;
+import com.spring.recruit.vo.SaveVo;
 import com.sun.org.glassfish.gmbal.ParameterNames;
 
 @Controller
@@ -175,6 +176,7 @@ public class RecruitController {
 			 @RequestParam(value="careerVoStartPeriod",required=false) String careerStartPeriod,
 			 @RequestParam(value="careerVoEndPeriod",required=false) String careerEndPeriod,
 			 @RequestParam(value="careerVoLocation",required=false) String careerLocation,
+			 
 			 	
 			 Model model ) throws Exception{
 		 	
@@ -243,7 +245,7 @@ public class RecruitController {
 			 @RequestParam(value="careerVoStartPeriod",required=false) String careerStartPeriod,
 			 @RequestParam(value="careerVoEndPeriod",required=false) String careerEndPeriod,
 			 @RequestParam(value="careerVoLocation",required=false) String careerLocation,
-			 	
+			 SaveVo saveVo,	
 			 Model model ) throws Exception{
 		 	
 		 //Vo에 안담기는 파라미터 직접 담아주기
@@ -322,7 +324,7 @@ public class RecruitController {
 			 model.addAttribute("careerYear", careerYear);
 			 model.addAttribute("careerRemainingMonths", careerRemainingMonths);
 			 
-			 
+			 model.addAttribute("recruit", loginVo);
 			 model.addAttribute("education", educationVo);
 			 model.addAttribute("career", careerVo);
 			 model.addAttribute("certificate", certificateVo);
@@ -340,13 +342,14 @@ public class RecruitController {
 			 EducationVo educationVo,
 			 CareerVo careerVo,
 			 CertificateVo certificateVo,
-			 @RequestParam(value="recruitVoLocation",required=false) String recruitLocation,
+			 @RequestParam(value="recruitVo.location",required=false) String recruitLocation,
 			 @RequestParam(value="educationVoStartPeriod",required=false) String educationStartPeriod,
 			 @RequestParam(value="educationVoEndPeriod",required=false) String educationEndPeriod,
 			 @RequestParam(value="educationVoLocation",required=false) String educationLocation,
 			 @RequestParam(value="careerVoStartPeriod",required=false) String careerStartPeriod,
 			 @RequestParam(value="careerVoEndPeriod",required=false) String careerEndPeriod,
-			 @RequestParam(value="careerVoLocation",required=false) String careerLocation,
+			 @RequestParam(value="careerVo.location",required=false) String careerLocation,
+			 SaveVo saveVo,	
 			 Model model ) throws Exception{
 		 	
 		 //Vo에 안담기는 파라미터 직접 담아주기
@@ -357,6 +360,24 @@ public class RecruitController {
 		 careerVo.setStartPeriod(careerStartPeriod);
 		 careerVo.setEndPeriod(careerEndPeriod);
 		 careerVo.setLocation(careerLocation);	
+		 
+		 EducationVo education = recruitService.selectEducation(recruitVo);
+		 CareerVo career = recruitService.selectCareer(recruitVo);			 
+		 CertificateVo certificate = recruitService.selectCertificate(recruitVo);
+		 
+		 int educationYear = calculateYears(educationVo.getStartPeriod(),educationVo.getEndPeriod());
+		 int careerYear = calculateYears(careerVo.getStartPeriod(), careerVo.getEndPeriod());		 
+		 int careerRemainingMonths =calculateRemainingMonths(careerVo.getStartPeriod(), careerVo.getEndPeriod());
+
+		 model.addAttribute("recruit", recruitVo);
+		 model.addAttribute("educationYear", educationYear);
+		 model.addAttribute("careerYear", careerYear);
+		 model.addAttribute("careerRemainingMonths", careerRemainingMonths);
+		 
+		 
+		 model.addAttribute("education", education);
+		 model.addAttribute("career", career);
+		 model.addAttribute("certificate", certificate);
 
 		 
 		 int recruitResult = recruitService.recruitUpdate(recruitVo);
@@ -398,37 +419,60 @@ public class RecruitController {
 		 	
 		 //Vo에 안담기는 파라미터 직접 담아주기
 		 recruitVo.setLocation(recruitLocation);
-//		 educationVo.setSeq(recruitVo.getSeq());
 		 educationVo.setStartPeriod(educationStartPeriod);
 		 educationVo.setEndPeriod(educationEndPeriod);
 		 educationVo.setLocation(educationLocation);
-//		 careerVo.setSeq(recruitVo.getSeq());
 		 careerVo.setStartPeriod(careerStartPeriod);
 		 careerVo.setEndPeriod(careerEndPeriod);
 		 careerVo.setLocation(careerLocation);
-//		 certificateVo.setSeq(recruitVo.getSeq());
-		 	
 
-		
-//		 int educationYear = calculateYears(educationVo.getStartPeriod(),educationVo.getEndPeriod());
-//		 int careerYear = calculateYears(careerVo.getStartPeriod(), careerVo.getEndPeriod());		 
-//		 int careerRemainingMonths =calculateRemainingMonths(careerVo.getStartPeriod(), careerVo.getEndPeriod());
-//		 
-//		 
-//		 model.addAttribute("recruit", recruitVo);
-//		 model.addAttribute("education", educationVo);
-//		 
-//		 model.addAttribute("educationYear", educationYear);
-//		 model.addAttribute("careerYear", careerYear);
-//		 model.addAttribute("careerRemainingMonths", careerRemainingMonths);
-//		 
-//		 model.addAttribute("career", careerVo);
-//		 model.addAttribute("certificate", certificateVo);
-//		 
-//		 System.out.println("seq::"+recruitVo.getSeq());
-//		 System.out.println("seq::"+recruitVo.getName());
-//		 System.out.println("seq::"+recruitVo.getPhone());
-//		 
+		 
+		 int recruitResult = recruitService.recruitUpdate(recruitVo);
+		 System.out.println("recruitResult::" + recruitResult);
+		 int educationResult = recruitService.educationInsert(educationVo, recruitVo);
+		 System.out.println("educationResult::" +educationResult);
+		 int careerResult = recruitService.careerInsert(careerVo, recruitVo);
+		 System.out.println("careerResult::" +careerResult);
+		 int certificateResult = recruitService.certificateInsert(certificateVo, recruitVo);
+		 System.out.println("certificateResult::" +certificateResult);
+		 
+		 if(recruitResult > 0 && educationResult > 0 && careerResult > 0 && certificateResult > 0) {
+			 System.out.println("제출 성공");
+			 recruitService.recruitSubmit(recruitVo);
+		 }else {
+			 System.out.println("제출 실패");
+		 }
+	  
+	  return "redirect:/recruit/main"; 
+	  
+	 }
+	 
+	 @RequestMapping(value = "/recruit/main/delete", method = RequestMethod.DELETE)
+	 public String recruitMainDelete(Locale locale, 
+			 HttpSession session,
+			 RecruitVo recruitVo,
+			 EducationVo educationVo,
+			 CareerVo careerVo,
+			 CertificateVo certificateVo,
+			 @RequestParam(value="recruitVoLocation",required=false) String recruitLocation,
+			 @RequestParam(value="educationVoStartPeriod",required=false) String educationStartPeriod,
+			 @RequestParam(value="educationVoEndPeriod",required=false) String educationEndPeriod,
+			 @RequestParam(value="educationVoLocation",required=false) String educationLocation,
+			 @RequestParam(value="careerVoStartPeriod",required=false) String careerStartPeriod,
+			 @RequestParam(value="careerVoEndPeriod",required=false) String careerEndPeriod,
+			 @RequestParam(value="careerVoLocation",required=false) String careerLocation,
+			 	
+			 Model model ) throws Exception{
+		 	
+		 //Vo에 안담기는 파라미터 직접 담아주기
+		 recruitVo.setLocation(recruitLocation);
+		 educationVo.setStartPeriod(educationStartPeriod);
+		 educationVo.setEndPeriod(educationEndPeriod);
+		 educationVo.setLocation(educationLocation);
+		 careerVo.setStartPeriod(careerStartPeriod);
+		 careerVo.setEndPeriod(careerEndPeriod);
+		 careerVo.setLocation(careerLocation);
+
 		 
 		 int recruitResult = recruitService.recruitUpdate(recruitVo);
 		 System.out.println("recruitResult::" + recruitResult);

@@ -188,7 +188,8 @@
          ,MAJOR = #{major}
          ,GRADE = #{grade}
          ,LOCATION = #{location}
-        WHERE SEQ = #{seq}
+        WHERE 
+         SEQ = #{seq}
     </update>
     
     <update id="careerUpdate" parameterType="com.spring.recruit.vo.CareerVo">
@@ -200,32 +201,35 @@
          ,START_PERIOD = #{startPeriod}
          ,END_PERIOD = #{endPeriod}
          ,TASK = #{task}
-        WHERE SEQ = #{seq}
+        WHERE 
+         SEQ = #{seq}
     </update>
     
     <update id="certificateUpdate" parameterType="com.spring.recruit.vo.CertificateVo">
         UPDATE
          CERTIFICATE
         SET
-         QUALIFI_NAME = #{qualfiName}
+         QUALIFI_NAME = #{qualifiName}
          ,ACQU_DATE = #{acquDate}
          ,ORGANIZE_NAME = #{organizeName}
-        WHERE SEQ = #{seq}
+        WHERE 
+         SEQ = #{seq}
     </update>
     
     
- <insert id="educationInsert" parameterType="map">
+ 	<insert id="educationInsert" parameterType="map">
         INSERT INTO 
-        EDUCATION 
-        (EDU_SEQ
-        ,SEQ
-        ,SCHOOL_NAME
-        ,DIVISION
-        ,START_PERIOD
-        ,END_PERIOD
-        ,MAJOR
-        ,GRADE
-        ,LOCATION
+         EDUCATION 
+        (
+         EDU_SEQ
+         ,SEQ
+         ,SCHOOL_NAME
+         ,DIVISION
+         ,START_PERIOD
+         ,END_PERIOD
+         ,MAJOR
+         ,GRADE
+         ,LOCATION
         )
         VALUES
         ( 
