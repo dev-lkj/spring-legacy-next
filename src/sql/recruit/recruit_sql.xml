@@ -242,56 +242,79 @@
         )
     </insert> 
     
- <insert id="careerInsert" parameterType="map">
-        INSERT INTO 
-        CAREER
-        (
-        CAR_SEQ
-        ,SEQ
-        ,COMP_NAME
-        ,LOCATION
-        ,START_PERIOD
-        ,END_PERIOD
-        ,TASK
-        )
-        VALUES
-        (
-        NVL( (SELECT TO_NUMBER(MAX(CAR_SEQ)+1)
-	     FROM CAREER),1)
-        ,#{recruitVo.seq}
-        ,#{careerVo.compName}
-        ,#{careerVo.location}
-	    ,#{careerVo.startPeriod}
-	    ,#{careerVo.endPeriod}
-        ,#{careerVo.task}
-        )
-    </insert>
+	 <insert id="careerInsert" parameterType="map">
+	        INSERT INTO 
+	        CAREER
+	        (
+	        CAR_SEQ
+	        ,SEQ
+	        ,COMP_NAME
+	        ,LOCATION
+	        ,START_PERIOD
+	        ,END_PERIOD
+	        ,TASK
+	        )
+	        VALUES
+	        (
+	        NVL( (SELECT TO_NUMBER(MAX(CAR_SEQ)+1)
+		     FROM CAREER),1)
+	        ,#{recruitVo.seq}
+	        ,#{careerVo.compName}
+	        ,#{careerVo.location}
+		    ,#{careerVo.startPeriod}
+		    ,#{careerVo.endPeriod}
+	        ,#{careerVo.task}
+	        )
+	    </insert>
     
     
-    <insert id="certificateInsert" parameterType="map">
-        INSERT INTO 
-        CERTIFICATE
-        (
-        CERT_SEQ
-        ,SEQ
-        ,QUALIFI_NAME
-        ,ACQU_DATE
-        ,ORGANIZE_NAME
-        )
-        VALUES
-        (
-         NVL( (SELECT TO_NUMBER(MAX(CERT_SEQ)+1)
-	     FROM CERTIFICATE),1)
-        ,#{recruitVo.seq}
-        ,#{certificateVo.qualifiName}
-        ,#{certificateVo.acquDate}
-	    ,#{certificateVo.organizeName}
-        )
-    </insert>
+	    <insert id="certificateInsert" parameterType="map">
+	        INSERT INTO 
+	        CERTIFICATE
+	        (
+	        CERT_SEQ
+	        ,SEQ
+	        ,QUALIFI_NAME
+	        ,ACQU_DATE
+	        ,ORGANIZE_NAME
+	        )
+	        VALUES
+	        (
+	         NVL( (SELECT TO_NUMBER(MAX(CERT_SEQ)+1)
+		     FROM CERTIFICATE),1)
+	        ,#{recruitVo.seq}
+	        ,#{certificateVo.qualifiName}
+	        ,#{certificateVo.acquDate}
+		    ,#{certificateVo.organizeName}
+	        )
+	    </insert>
+	    
+	    <delete id="educationDelete" parameterType="com.spring.recruit.vo.EducationVo">
+	        DELETE
+	        FROM
+	         EDUCATION
+	        WHERE EDU_SEQ = #{eduSeq}
+	    </delete>
+	    
+	    <delete id="careerDelete" parameterType="com.spring.recruit.vo.CareerVo">
+	        DELETE
+	        FROM
+	         CAREER
+	        WHERE CAR_SEQ = #{carSeq}
+	    </delete>
+	    
+	    
+	    <delete id="certificateDelete" parameterType="com.spring.recruit.vo.CertificateVo">
+	        DELETE
+	        FROM
+	         CERTIFICATE
+	        WHERE CERT_SEQ = #{certSeq}
+	    </delete>
  
-    
+    	 
  
     
     
 </mapper> 
+
 

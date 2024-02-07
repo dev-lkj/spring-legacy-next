@@ -42,4 +42,11 @@ public interface RecruitService {
 	public int certificateInsert(CertificateVo certificateVo, RecruitVo recruitVo) throws Exception;
 	
 	
+	public int educationDelete(EducationVo educationVo) throws Exception;
+	
+	public int careerDelete(CareerVo careerVo) throws Exception;	
+	
+	public int certificateDelete(CertificateVo certificateVo) throws Exception;
+	
+	
 }

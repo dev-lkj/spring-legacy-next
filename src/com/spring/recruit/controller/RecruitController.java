@@ -168,13 +168,13 @@ public class RecruitController {
 			 EducationVo educationVo,
 			 CareerVo careerVo,
 			 CertificateVo certificateVo,
-			 @RequestParam(value="recruitVo.location",required=false) String recruitLocation,
-			 @RequestParam(value="educationVo.startPeriod",required=false) String educationStartPeriod,
-			 @RequestParam(value="educationVo.endPeriod",required=false) String educationEndPeriod,
-			 @RequestParam(value="educationVo.location",required=false) String educationLocation,
-			 @RequestParam(value="careerVo.startPeriod",required=false) String careerStartPeriod,
-			 @RequestParam(value="careerVo.endPeriod",required=false) String careerEndPeriod,
-			 @RequestParam(value="careerVo.location",required=false) String careerLocation,
+			 @RequestParam(value="recruitVoLocation",required=false) String recruitLocation,
+			 @RequestParam(value="educationVoStartPeriod",required=false) String educationStartPeriod,
+			 @RequestParam(value="educationVoEndPeriod",required=false) String educationEndPeriod,
+			 @RequestParam(value="educationVoLocation",required=false) String educationLocation,
+			 @RequestParam(value="careerVoStartPeriod",required=false) String careerStartPeriod,
+			 @RequestParam(value="careerVoEndPeriod",required=false) String careerEndPeriod,
+			 @RequestParam(value="careerVoLocation",required=false) String careerLocation,
 			 	
 			 Model model ) throws Exception{
 		 	
@@ -236,13 +236,13 @@ public class RecruitController {
 			 EducationVo educationVo,
 			 CareerVo careerVo,
 			 CertificateVo certificateVo,
-			 @RequestParam(value="recruitVo.location",required=false) String recruitLocation,
-			 @RequestParam(value="educationVo.startPeriod",required=false) String educationStartPeriod,
-			 @RequestParam(value="educationVo.endPeriod",required=false) String educationEndPeriod,
-			 @RequestParam(value="educationVo.location",required=false) String educationLocation,
-			 @RequestParam(value="careerVo.startPeriod",required=false) String careerStartPeriod,
-			 @RequestParam(value="careerVo.endPeriod",required=false) String careerEndPeriod,
-			 @RequestParam(value="careerVo.location",required=false) String careerLocation,
+			 @RequestParam(value="recruitVoLocation",required=false) String recruitLocation,
+			 @RequestParam(value="educationVoStartPeriod",required=false) String educationStartPeriod,
+			 @RequestParam(value="educationVoEndPeriod",required=false) String educationEndPeriod,
+			 @RequestParam(value="educationVoLocation",required=false) String educationLocation,
+			 @RequestParam(value="careerVoStartPeriod",required=false) String careerStartPeriod,
+			 @RequestParam(value="careerVoEndPeriod",required=false) String careerEndPeriod,
+			 @RequestParam(value="careerVoLocation",required=false) String careerLocation,
 			 	
 			 Model model ) throws Exception{
 		 	
@@ -340,13 +340,13 @@ public class RecruitController {
 			 EducationVo educationVo,
 			 CareerVo careerVo,
 			 CertificateVo certificateVo,
-			 @RequestParam(value="recruitVo.location",required=false) String recruitLocation,
-			 @RequestParam(value="educationVo.startPeriod",required=false) String educationStartPeriod,
-			 @RequestParam(value="educationVo.endPeriod",required=false) String educationEndPeriod,
-			 @RequestParam(value="educationVo.location",required=false) String educationLocation,
-			 @RequestParam(value="careerVo.startPeriod",required=false) String careerStartPeriod,
-			 @RequestParam(value="careerVo.endPeriod",required=false) String careerEndPeriod,
-			 @RequestParam(value="careerVo.location",required=false) String careerLocation,
+			 @RequestParam(value="recruitVoLocation",required=false) String recruitLocation,
+			 @RequestParam(value="educationVoStartPeriod",required=false) String educationStartPeriod,
+			 @RequestParam(value="educationVoEndPeriod",required=false) String educationEndPeriod,
+			 @RequestParam(value="educationVoLocation",required=false) String educationLocation,
+			 @RequestParam(value="careerVoStartPeriod",required=false) String careerStartPeriod,
+			 @RequestParam(value="careerVoEndPeriod",required=false) String careerEndPeriod,
+			 @RequestParam(value="careerVoLocation",required=false) String careerLocation,
 			 Model model ) throws Exception{
 		 	
 		 //Vo에 안담기는 파라미터 직접 담아주기
@@ -386,13 +386,13 @@ public class RecruitController {
 			 EducationVo educationVo,
 			 CareerVo careerVo,
 			 CertificateVo certificateVo,
-			 @RequestParam(value="recruitVo.location",required=false) String recruitLocation,
-			 @RequestParam(value="educationVo.startPeriod",required=false) String educationStartPeriod,
-			 @RequestParam(value="educationVo.endPeriod",required=false) String educationEndPeriod,
-			 @RequestParam(value="educationVo.location",required=false) String educationLocation,
-			 @RequestParam(value="careerVo.startPeriod",required=false) String careerStartPeriod,
-			 @RequestParam(value="careerVo.endPeriod",required=false) String careerEndPeriod,
-			 @RequestParam(value="careerVo.location",required=false) String careerLocation,
+			 @RequestParam(value="recruitVoLocation",required=false) String recruitLocation,
+			 @RequestParam(value="educationVoStartPeriod",required=false) String educationStartPeriod,
+			 @RequestParam(value="educationVoEndPeriod",required=false) String educationEndPeriod,
+			 @RequestParam(value="educationVoLocation",required=false) String educationLocation,
+			 @RequestParam(value="careerVoStartPeriod",required=false) String careerStartPeriod,
+			 @RequestParam(value="careerVoEndPeriod",required=false) String careerEndPeriod,
+			 @RequestParam(value="careerVoLocation",required=false) String careerLocation,
 			 	
 			 Model model ) throws Exception{
 		 	

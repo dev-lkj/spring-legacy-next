@@ -10,6 +10,7 @@
 <script type="text/javascript">
 	$j(document).ready(function() {
 		
+		alert("main check");
 		// 날짜 입력 필드에 대한 유효성 검사를 수행합니다.
 	    $j(".dateInput").on("input", function() {
 	        var input = $j(this).val();
@@ -114,10 +115,10 @@
 		
 		
 		$j("select[name=gender]").val("${recruit.gender}").prop("selected",true);
-		$j("select[name=recruitVo.location]").val("${recruit.location}").prop("selected",true);
+		$j("select[name=recruitVoLocation]").val("${recruit.location}").prop("selected",true);
 		$j("select[name=workType]").val("${recruit.workType}").prop("selected",true);
 		$j("select[name=division]").val("${education.division}").prop("selected",true);
-		$j("select[name=educationVo.location]").val("${education.location}").prop("selected",true);
+		$j("select[name=educationVoLocation]").val("${education.location}").prop("selected",true);
 		
 	
 		$j("#educationAdd").on("click", function() {
@@ -242,7 +243,7 @@
 						<tr align="center" style="font-weight: bold;">
 							<td><label for="recruitLocation">희망근무지</label></td>
 							<td align="left">
-								<select id="recruitLocation" name="recruitVo.location" required >
+								<select id="recruitLocation" name="recruitVoLocation" required >
 									<option value="서울">서울</option>
 									<option value="경기">경기</option>
 									<option value="인천">인천</option>
@@ -362,9 +363,9 @@
 										<input type="checkbox" class="educationCheckbox"/>
 									</td>
 									<td>
-										<input type="text" name="educationVo.startPeriod" value="${education.startPeriod}" required class="dateInput educationStartDate" placeholder="ex) yy.MM.dd"/><br /> 
+										<input type="text" name="educationVoStartPeriod" value="${education.startPeriod}" required class="dateInput educationStartDate" placeholder="ex) yy.MM.dd"/><br /> 
 										~<br /> 
-										<input type="text" name="educationVo.endPeriod"	value="${education.endPeriod}" required class="dateInput educationEndDate" placeholder="ex) yy.MM.dd"/>
+										<input type="text" name="educationVoEndPeriod"	value="${education.endPeriod}" required class="dateInput educationEndDate" placeholder="ex) yy.MM.dd"/>
 									</td>
 									<td>
 										<select name="division">
@@ -375,7 +376,7 @@
 									</td>
 									<td>
 										<input type="text" name="schoolName" value="${education.schoolName}" required placeholder="OO대학교"/> 
-										<select	name="educationVo.location">
+										<select	name="educationVoLocation">
 											<option value="서울">서울</option>
 											<option value="경기">경기</option>
 											<option value="강원">강원</option>
@@ -448,8 +449,8 @@
 								<tr class="careerRow">
 									<td><input type="checkbox" class="careerCheckbox"/></td>
 									<td>
-										<input type="text" name="careerVo.startPeriod" value="${career.startPeriod}" required class="dateInput careerStartDate" placeholder="ex) yy.MM.dd" />~<br />
-									    <input type="text" name="careerVo.endPeriod" value="${career.endPeriod}" required class="dateInput careerEndDate" placeholder="ex) yy.MM.dd"/>
+										<input type="text" name="careerVoStartPeriod" value="${career.startPeriod}" required class="dateInput careerStartDate" placeholder="ex) yy.MM.dd" />~<br />
+									    <input type="text" name="careerVoEndPeriod" value="${career.endPeriod}" required class="dateInput careerEndDate" placeholder="ex) yy.MM.dd"/>
 									</td>
 									<td>
 										<input type="text" name="compName" value="${career.compName}" placeholder="ex) 네이버"/>
@@ -458,7 +459,7 @@
 										<input type="text" name="task" value="${career.task}" placeholder="ex) 사원"/>
 									</td>
 									<td>
-										<input type="text" name="careerVo.location" value="${career.location}" placeholder="ex) 서울시 강남구"/>
+										<input type="text" name="careerVoLocation" value="${career.location}" placeholder="ex) 서울시 강남구"/>
 									</td>
 								</tr>
 <%-- 							</c:otherwise> --%>

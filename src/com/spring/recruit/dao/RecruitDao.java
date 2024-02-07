@@ -41,4 +41,13 @@ public interface RecruitDao {
 	public int careerInsert(CareerVo careerVo, RecruitVo recruitVo) throws Exception;
 	
 	public int certificateInsert(CertificateVo certificateVo, RecruitVo recruitVo) throws Exception;
+	
+	
+	
+	public int educationDelete(EducationVo educationVo) throws Exception;
+	
+	public int careerDelete(CareerVo careerVo) throws Exception;	
+	
+	public int certificateDelete(CertificateVo certificateVo) throws Exception;
+	
 }

@@ -138,6 +138,22 @@ public class RecruitDaoImpl implements RecruitDao{
 		map.put("recruitVo", recruitVo);
 		return sqlSession.insert("recruit.certificateInsert", map);
 	}
+	
+	
+	@Override
+	public int educationDelete(EducationVo educationVo) throws Exception{
+		return sqlSession.delete("recruit.educationDelete",educationVo);
+	}
+	
+	@Override
+	public int careerDelete(CareerVo careerVo) throws Exception{
+		return sqlSession.delete("recruit.careerDelete",careerVo);
+	}
+	
+	@Override
+	public int certificateDelete(CertificateVo certificateVo) throws Exception{
+		return sqlSession.delete("recruit.certificateDelete",certificateVo);
+	}
 
 
 

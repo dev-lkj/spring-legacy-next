@@ -101,6 +101,21 @@ public class RecruitServiceImpl implements RecruitService{
 		// TODO Auto-generated method stub
 		return recruitDao.certificateInsert(certificateVo, recruitVo);
 	}
+	
+	@Override
+	public int educationDelete(EducationVo educationVo) throws Exception{
+		return recruitDao.educationDelete(educationVo);
+	}
+	
+	@Override
+	public int careerDelete(CareerVo careerVo) throws Exception{
+		return recruitDao.careerDelete(careerVo);
+	}
+	
+	@Override
+	public int certificateDelete(CertificateVo certificateVo) throws Exception{
+		return recruitDao.certificateDelete(certificateVo);
+	}
 
 	
 	
@@ -109,3 +124,4 @@ public class RecruitServiceImpl implements RecruitService{
 	
 	
 }
+
